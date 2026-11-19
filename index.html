@@ -1,0 +1,2953 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>بلانر العادات الذرية PRO — الزرقا، دمياط</title>
+
+  <!-- إعدادات iPhone 11 Safari & Web App -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="العادات الذرية PRO" />
+  <meta name="theme-color" content="#070B14" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23070B14'/%3E%3Ctext x='90' y='112' font-family='Arial,sans-serif' font-size='64' font-weight='900' fill='%23FBBF24' text-anchor='middle'%3E1%25%3C/text%3E%3C/svg%3E" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+
+  <!-- خطوط عربية واضحة -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@500;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --bg-primary: #070B14;
+      --accent-glow: rgba(16, 185, 129, 0.16);
+    }
+    body[data-theme="emerald"] { --bg-primary: #070B14; --accent-glow: rgba(16, 185, 129, 0.16); }
+    body[data-theme="royal"]   { --bg-primary: #0B0914; --accent-glow: rgba(245, 158, 11, 0.20); }
+    body[data-theme="cyber"]   { --bg-primary: #060918; --accent-glow: rgba(6, 182, 212, 0.18); }
+    body[data-theme="volcanic"]{ --bg-primary: #11070A; --accent-glow: rgba(244, 63, 94, 0.18); }
+
+    * {
+      font-family: 'Cairo', 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      background-image:
+        radial-gradient(circle at 12% 4%, var(--accent-glow) 0%, transparent 38%),
+        radial-gradient(circle at 88% 14%, rgba(245, 158, 11, 0.11) 0%, transparent 40%),
+        radial-gradient(circle at 50% 94%, rgba(99, 102, 241, 0.09) 0%, transparent 45%);
+      color: #F8FAFC;
+      overflow-x: hidden;
+      padding-top: env(safe-area-inset-top);
+      transition: background-color 0.35s ease;
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(10px) scale(0.985); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .animate-fade-up { animation: fadeSlideUp 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    @keyframes reelSpin {
+      0%, 100% { transform: translateY(0) scale(1); }
+      33% { transform: translateY(-7px) scale(1.08); }
+      66% { transform: translateY(6px) scale(0.93); }
+    }
+    .reel-spinning {
+      animation: reelSpin 0.12s linear infinite;
+      filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.65));
+    }
+
+    @keyframes reelLock {
+      0% { transform: scale(1.36); }
+      60% { transform: scale(0.90); }
+      100% { transform: scale(1); }
+    }
+    .reel-locked { animation: reelLock 0.24s ease-out forwards; }
+
+    @keyframes goldenPulse {
+      0%, 100% { box-shadow: 0 0 12px rgba(245, 158, 11, 0.25); }
+      50% { box-shadow: 0 0 26px rgba(251, 191, 36, 0.72); }
+    }
+    .animate-golden-glow { animation: goldenPulse 1.6s ease-in-out infinite; }
+
+    @keyframes stackHighlight {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.75); }
+      50% { box-shadow: 0 0 24px 4px rgba(16, 185, 129, 0.45); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    .stack-illuminated {
+      animation: stackHighlight 1.8s ease-out;
+      border-color: rgba(52, 211, 153, 0.9) !important;
+    }
+
+    .safe-bottom { padding-bottom: max(0.65rem, env(safe-area-inset-bottom)); }
+  </style>
+</head>
+<body data-theme="emerald" class="min-h-screen pb-28 selection:bg-amber-500/30 selection:text-amber-200">
+
+  <!-- كانفاس القصاصات الاحتفالية -->
+  <canvas id="confettiCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+  <!-- حاوية الإشعارات العائمة (Toasts) -->
+  <div id="toastContainer" class="fixed top-3 inset-x-3 z-50 flex flex-col items-center gap-2 pointer-events-none"></div>
+
+  <!-- ================= 1. HEADER التفاعلي + توقيت الزرقا، دمياط + مود الجامعة/الإجازة ================= -->
+  <header class="sticky top-0 z-30 bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/90 shadow-2xl shadow-black/50">
+    <div class="max-w-3xl mx-auto px-3 sm:px-4 pt-2.5 pb-2.5 space-y-2">
+
+      <!-- الصف العلوي: الشعار + الجواهر + الأصوات + تصدير index.html لـ Tiiny Host -->
+      <div class="flex items-center justify-between gap-1.5">
+        <div class="flex items-center gap-2 min-w-0">
+          <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-emerald-400 via-amber-400 to-amber-600 text-slate-950 font-black text-base sm:text-lg flex items-center justify-center shadow-lg shadow-amber-500/25 shrink-0 ring-2 ring-amber-300/40">
+            1%
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <h1 class="text-xs sm:text-base font-black text-white truncate">بلانر العادات الذرية PRO</h1>
+              <span class="px-1.5 py-0.5 rounded-md bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[9px] font-black shrink-0">
+                📍 الزرقا، دمياط
+              </span>
+            </div>
+            <p id="nextPrayerCountdownHeader" class="text-[10px] sm:text-xs text-amber-300/95 font-bold truncate">
+              ⏳ جاري حساب مواقيت الزرقا، دمياط...
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5 shrink-0">
+          <!-- عداد الجواهر -->
+          <button onclick="switchTab('rewards')" title="رصيد الجواهر — افتح المتجر"
+            class="px-2.5 h-9 sm:h-10 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-400/45 text-sky-200 font-black text-xs sm:text-sm flex items-center gap-1 shadow-md transition active:scale-95">
+            <span>💎</span>
+            <span id="headerGemsCount" class="font-mono">0</span>
+          </button>
+
+          <!-- تجربة الأصوات -->
+          <button onclick="SoundEngine.previewAll()" title="تجربة المؤثرات الصوتية"
+            class="px-2 h-9 sm:h-10 rounded-xl bg-purple-500/15 hover:bg-purple-500/25 border border-purple-400/40 text-purple-200 font-extrabold text-[11px] flex items-center gap-1 transition active:scale-95">
+            <span>🔔</span>
+            <span class="hidden sm:inline">الأصوات</span>
+          </button>
+
+          <!-- كتم / تشغيل الصوت -->
+          <button onclick="toggleSound()" title="تشغيل/كتم الصوت"
+            class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-slate-100 flex items-center justify-center transition active:scale-95">
+            <span id="soundIcon" class="text-sm sm:text-base">🔊</span>
+          </button>
+
+          <!-- تحميل index.html لرفعه على Tiiny Host -->
+          <button onclick="exportTiinyHostHTML()" title="تحميل ملف index.html جاهز للرفع على Tiiny Host"
+            class="px-2.5 sm:px-3 h-9 sm:h-10 rounded-xl bg-gradient-to-l from-amber-500 via-amber-400 to-yellow-300 hover:brightness-105 text-slate-950 font-black text-[10px] sm:text-xs shadow-md shadow-amber-500/25 transition active:scale-95 flex items-center gap-1">
+            <span>⬇️</span>
+            <span>تحديث الموقع</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- شريط المستوى RPG Level + شريط التقدم XP -->
+      <div class="bg-slate-900/95 border border-emerald-500/30 rounded-xl px-3 py-1.5 space-y-1">
+        <div class="flex items-center justify-between gap-2 text-[11px] sm:text-xs">
+          <div class="flex items-center gap-1.5 font-extrabold truncate">
+            <span id="headerLevelBadge" class="px-2 py-0.5 rounded-md bg-amber-500/20 border border-amber-500/40 text-amber-300 shrink-0">
+              المستوى 1
+            </span>
+            <span id="headerRankTitle" class="text-white truncate">منضبط، قارئ، ومتميز 🌱</span>
+          </div>
+          <div class="flex items-center gap-2 font-bold shrink-0">
+            <span id="headerComboBadge" class="px-2 py-0.5 rounded-md bg-orange-500/20 border border-orange-500/40 text-orange-300 text-[10px] font-black">
+              كومبو اليوم: 0 🔥
+            </span>
+            <span id="headerXpText" class="text-emerald-300 font-mono text-[11px]">0 / 120 XP</span>
+          </div>
+        </div>
+        <div class="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+          <div id="headerXpBar" class="h-full bg-gradient-to-l from-amber-400 via-emerald-400 to-sky-400 transition-all duration-500" style="width: 4%"></div>
+        </div>
+      </div>
+
+      <!-- محدد أيام الأسبوع + مبدّل مود الجامعة / مود الإجازة -->
+      <div class="bg-slate-900/95 border border-slate-800 rounded-xl p-2 space-y-1.5">
+        <div class="flex flex-wrap items-center justify-between gap-2 text-[11px] sm:text-xs">
+          <div class="flex items-center gap-1.5 min-w-0">
+            <span id="dayModeIcon" class="shrink-0">🌿</span>
+            <span id="headerScheduleText" class="font-extrabold text-amber-200 truncate">جاري تحميل الجدول...</span>
+          </div>
+
+          <!-- مبدّل سريع بين مود الجامعة ومود الإجازة -->
+          <div class="flex items-center gap-1 shrink-0">
+            <button id="btnModeUniversity" onclick="setDayModeOverride('university')"
+              class="px-2 py-0.5 rounded-md text-[10px] font-black border transition">
+              🏛️ مود الجامعة
+            </button>
+            <button id="btnModeRest" onclick="setDayModeOverride('rest')"
+              class="px-2 py-0.5 rounded-md text-[10px] font-black border transition">
+              🌿 مود الإجازة
+            </button>
+            <button id="btnModeAuto" onclick="setDayModeOverride('auto')" title="تلقائي حسب اليوم المختار"
+              class="px-1.5 py-0.5 rounded-md text-[10px] font-extrabold bg-slate-800 text-slate-300 border border-slate-700 hover:border-slate-500 transition">
+              تلقائي
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between gap-2">
+          <div id="scheduleDayPills" class="flex items-center gap-1 overflow-x-auto no-scrollbar"></div>
+          <span id="todayHabitsProgressPill" class="px-2 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-500/35 text-emerald-300 text-[10px] font-black shrink-0">
+            0 / 10
+          </span>
+        </div>
+      </div>
+
+      <!-- 4 مؤشرات سريعة (KPIs) -->
+      <div class="grid grid-cols-4 gap-1.5">
+        <div onclick="switchTab('laws')" class="cursor-pointer bg-slate-900/90 border border-slate-800 hover:border-amber-500/40 rounded-xl p-1.5 text-center transition">
+          <div id="kpiIdentityVotes" class="text-xs sm:text-sm font-black text-amber-400">0</div>
+          <div class="text-[9px] sm:text-[10px] text-slate-400 font-bold">أصوات الهوية 🏆</div>
+        </div>
+        <div onclick="switchTab('tracker')" class="cursor-pointer bg-slate-900/90 border border-slate-800 hover:border-orange-500/40 rounded-xl p-1.5 text-center transition">
+          <div id="kpiStreakDays" class="text-xs sm:text-sm font-black text-orange-400">1 يوم</div>
+          <div class="text-[9px] sm:text-[10px] text-slate-400 font-bold">السلسلة الحالية 🔥</div>
+        </div>
+        <div onclick="switchTab('rewards')" class="cursor-pointer bg-slate-900/90 border border-purple-500/35 hover:border-purple-400 rounded-xl p-1.5 text-center transition">
+          <div id="kpiLuckMeter" class="text-xs sm:text-sm font-black text-purple-300">20%</div>
+          <div class="text-[9px] sm:text-[10px] text-purple-300/85 font-bold">عداد الحظ 🎰</div>
+        </div>
+        <button onclick="openSlotMachineModal('سحب تجريبي سريع 🎰', 'gold', true)"
+          class="bg-gradient-to-l from-amber-500/25 to-emerald-500/20 hover:brightness-110 border border-amber-400/50 rounded-xl p-1.5 text-center transition active:scale-95">
+          <div class="text-xs sm:text-sm font-black text-amber-300">🎰 لف الآن</div>
+          <div class="text-[9px] sm:text-[10px] text-emerald-300 font-bold">ماكينة الحظ</div>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= شريط ساعة الحظ الذهبية ================= -->
+  <div id="goldenHourActiveBanner" class="hidden max-w-3xl mx-auto px-3 sm:px-4 pt-3">
+    <div class="bg-gradient-to-l from-amber-500/30 via-yellow-500/20 to-orange-500/30 border-2 border-amber-400 rounded-2xl p-3 flex items-center justify-between gap-2 animate-golden-glow">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl">⚡</span>
+        <div>
+          <div class="text-xs sm:text-sm font-black text-amber-200">ساعة الحظ الذهبية نشطة الآن! (2x XP و 2x 💎)</div>
+          <div class="text-[11px] text-amber-100/90">كل عادة أو صلاة تنجزها الآن تُضاعف نقاطها وجواهرها تلقائياً!</div>
+        </div>
+      </div>
+      <div class="px-3 py-1.5 rounded-xl bg-slate-950/90 border border-amber-400/60 text-amber-300 font-mono font-black text-sm shrink-0" id="goldenHourCountdown">
+        59:59
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= تنبيه قاعدة "لا تفوّت مرتين ⚠️" ================= -->
+  <div id="neverMissTwiceBanner" class="hidden max-w-3xl mx-auto px-3 sm:px-4 pt-3">
+    <div class="bg-gradient-to-l from-rose-950/90 via-amber-950/80 to-slate-900 border-2 border-amber-400/70 rounded-2xl p-3.5 space-y-2.5 shadow-xl">
+      <div class="flex items-start gap-2">
+        <span class="text-2xl">⚠️</span>
+        <div>
+          <h3 class="text-xs sm:text-sm font-black text-amber-300">قاعدة "لا تفوّت مرتين" (Never Miss Twice — جيمس كلير)</h3>
+          <p class="text-[11px] sm:text-xs text-slate-200 mt-0.5 leading-relaxed">
+            فوات يوم واحد حادث عابر، أما فوات يومين متتاليين فهو بداية عادة جديدة! نفّذ خطة التعويض الفورية الآن لاستعادة سلسلتك:
+          </p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <button onclick="executeNeverMissRecoveryTwoMin()"
+          class="py-2.5 px-3 rounded-xl bg-gradient-to-l from-emerald-500 to-emerald-400 text-slate-950 font-black text-xs shadow-md transition active:scale-95">
+          ⚡ خطة التعويض: نفّذ عادة دقيقتين الآن (+25 💎 بونص عودة)
+        </button>
+        <button onclick="useStreakShield()"
+          class="py-2.5 px-3 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/50 text-sky-200 font-black text-xs transition active:scale-95">
+          🛡️ استخدام درع حماية السلسلة (<span id="bannerShieldsCount">1</span> متاح)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= المحتوى الرئيسي للتبويبات ================= -->
+  <main class="max-w-3xl mx-auto px-3 sm:px-4 pt-3.5 space-y-4">
+
+    <!-- ================= TAB 1: اليوم وتكديس العادات (الجامعة vs الإجازة) ================= -->
+    <section id="tab-today" class="space-y-4 animate-fade-up">
+
+      <!-- بانر توضيحي لنظام اليوم الحالي: مود الجامعة (مذاكرة أخف وبعد التمرين) vs مود الإجازة -->
+      <div id="dayModeExplanationBanner" class="bg-gradient-to-l from-emerald-950/75 via-slate-900 to-amber-950/60 border border-emerald-500/45 rounded-2xl p-3.5 space-y-1.5 shadow-lg">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <span id="bannerModeBadge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/50 text-emerald-300 text-xs font-black">
+              🌿 مود أيام الإجازة والراحة
+            </span>
+            <span id="bannerModeDayName" class="text-xs font-extrabold text-amber-300">الخميس</span>
+          </div>
+          <span id="bannerStudyRuleTag" class="text-[11px] font-black text-sky-300">
+            📚 جلستا مذاكرة (50 د + 50 د) + إكسيل فترات بعد القراءة
+          </span>
+        </div>
+        <p id="bannerModeDescription" class="text-xs text-slate-200 leading-relaxed"></p>
+      </div>
+
+      <!-- 1. مواقيت الصلاة لمدينة الزرقا، دمياط + سلسلة التكديس حول الصلوات والقراءة -->
+      <div class="bg-slate-900/95 border-2 border-emerald-500/45 rounded-2xl p-3.5 sm:p-4 space-y-3 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🕌</span>
+            <div>
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <h2 class="text-xs sm:text-base font-black text-white">مواقيت الصلاة — الزرقا، دمياط</h2>
+                <span class="px-2 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-400/40 text-emerald-300 text-[10px] font-black">
+                  الهيئة المصرية للمساحة (31.21°N, 31.64°E)
+                </span>
+              </div>
+              <p class="text-[11px] text-amber-300 font-bold mt-0.5">
+                طقس ما قبل كل صلاة (تسريح الشعر + الوضوء) ← يُطلق سلسلة العادات المكدّسة بعدها مباشرة
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button onclick="openPrayerOffsetModal()" title="ضبط الدقائق يدوياً إن لزم"
+              class="px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-[11px] font-extrabold">
+              ⚙️ ضبط الدقائق
+            </button>
+            <span id="prayerCountBadge" class="px-3 py-1 rounded-xl bg-amber-500/20 border border-amber-400/50 text-amber-300 text-xs font-black">
+              0/5 صلوات
+            </span>
+          </div>
+        </div>
+
+        <!-- أزرار الصلوات الخمس بمواقيت الزرقا الدقيقة -->
+        <div id="prayerPillsGrid" class="grid grid-cols-5 gap-1.5 sm:gap-2"></div>
+
+        <!-- خريطة التكديس الزمنية المتسلسلة حسب مود اليوم (الجامعة: مذاكرة أخف بعد التمرين | الإجازة: جلسات أوسع + إكسيل فترات بعد القراءة) -->
+        <div class="bg-slate-950/85 border border-slate-800 rounded-xl p-3 space-y-2">
+          <div class="flex flex-wrap items-center justify-between gap-1">
+            <span class="text-[11px] font-black text-amber-400">⛓️ خريطة التكديس الزمنية (الظهر • التمرين • القراءة • إكسيل فترات • المذاكرة):</span>
+            <span class="text-[10px] text-slate-400 font-bold">اضغط على أي خطوة للانتقال لعادتها</span>
+          </div>
+          <div id="habitStackingTimeline" class="space-y-1.5 text-[11px] sm:text-xs"></div>
+        </div>
+      </div>
+
+      <!-- 2. عنوان قائمة العادات + زر إضافة عادة جديدة -->
+      <div class="flex items-center justify-between gap-2 pt-0.5">
+        <div>
+          <h2 id="habitsSectionTitle" class="text-sm sm:text-base font-black text-white">⏰ عادات اليوم المكدّسة</h2>
+          <p id="habitsSectionSubtitle" class="text-[11px] text-slate-400">تتكيف تلقائياً بين أيام الجامعة وأيام الإجازة، مع إكسيل على فترات يشمل فترة بعد القراءة.</p>
+        </div>
+        <button onclick="openHabitEditorModal(null)"
+          class="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs sm:text-sm shadow-md shadow-emerald-500/20 transition active:scale-95 shrink-0">
+          + عادة جديدة
+        </button>
+      </div>
+
+      <!-- 3. بطاقات العادات التفصيلية -->
+      <div id="habitsListContainer" class="space-y-3"></div>
+
+      <!-- المهام والمواعيد (الجامعة والمذاكرة / التمرين والتغذية / مهام وأهداف) -->
+      <div id="tasksCard" class="bg-slate-900/95 border border-sky-500/40 rounded-2xl p-3.5 sm:p-4 space-y-3 shadow-lg">
+        <div class="flex items-center justify-between gap-2">
+          <h2 class="text-sm sm:text-base font-black text-sky-300">🗂️ المهام والمواعيد</h2>
+          <span id="tasksProgressPill" class="px-2.5 py-0.5 rounded-lg bg-sky-500/15 border border-sky-400/40 text-sky-200 text-[11px] font-black">0 / 0 اليوم</span>
+        </div>
+        <div class="w-full h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+          <div id="tasksProgressBar" class="h-full bg-gradient-to-l from-sky-400 to-emerald-400 transition-all duration-500" style="width: 0%"></div>
+        </div>
+        <div id="taskCatChips" class="flex gap-1.5 overflow-x-auto no-scrollbar pb-0.5"></div>
+        <div class="grid grid-cols-2 gap-2">
+          <input id="taskTitleInput" type="text" placeholder="اكتب مهمة جديدة..." onkeydown="if(event.key==='Enter')addTask()"
+            class="col-span-2 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400" />
+          <select id="taskCatInput" class="bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-400">
+            <option value="study">🎓 الجامعة والمذاكرة</option>
+            <option value="fit">💪 التمرين والتغذية</option>
+            <option value="life">🎯 مهام وأهداف</option>
+          </select>
+          <select id="taskPrioInput" class="bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-400">
+            <option value="3">🔴 أولوية عالية</option>
+            <option value="2" selected>🟡 أولوية متوسطة</option>
+            <option value="1">🟢 أولوية منخفضة</option>
+          </select>
+          <input id="taskDateInput" type="date" class="bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-400" />
+          <input id="taskTimeInput" type="time" class="bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-400" />
+          <button onclick="addTask()" class="col-span-2 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-sm transition active:scale-95">+ إضافة المهمة (بدون تاريخ = اليوم)</button>
+        </div>
+        <div id="tasksListContainer" class="space-y-3"></div>
+      </div>
+
+
+      <!-- 4. الموسم الأسبوعي + ساعة الحظ والزعيم الأسبوعي -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+        <div class="bg-gradient-to-l from-emerald-950/70 via-slate-900 to-amber-950/50 border border-emerald-500/40 rounded-2xl p-3.5 space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <span id="seasonBadgeTag" class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black">الموسم #1</span>
+            <button onclick="cyclePreviewSeason()" class="text-[10px] font-extrabold text-amber-300 hover:underline">🔄 تبديل الموسم</button>
+          </div>
+          <h3 id="seasonTitleText" class="text-xs sm:text-sm font-black text-white">⚔️ أسبوع غنائم كلاش والانضباط</h3>
+          <p id="seasonBuffDesc" class="text-[11px] text-emerald-200/90 leading-relaxed"></p>
+          <div class="space-y-1">
+            <div class="flex justify-between text-[10px] font-bold text-slate-300">
+              <span>تقدم جائزة الموسم:</span>
+              <span id="seasonProgressLabel" class="font-mono text-amber-300">0 / 300 XP</span>
+            </div>
+            <div class="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden">
+              <div id="seasonProgressBar" class="h-full bg-gradient-to-l from-emerald-400 to-amber-400" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/95 border border-amber-500/40 rounded-2xl p-3.5 space-y-2.5 flex flex-col justify-between">
+          <div class="space-y-1">
+            <div class="flex items-center justify-between gap-1">
+              <span class="text-xs font-black text-amber-300">⚡ ساعة الحظ الذهبية (2x)</span>
+              <span id="goldenHourLockTag" class="px-2 py-0.5 rounded bg-slate-800 text-[10px] font-black text-slate-300">🔒 Lv.4</span>
+            </div>
+            <button id="activateGoldenHourBtn" onclick="activateGoldenHourManual()"
+              class="w-full py-2 rounded-xl bg-gradient-to-l from-amber-500 to-yellow-400 text-slate-950 font-black text-xs transition active:scale-95">
+              ⚡ تفعيل ساعة الحظ (60 دقيقة)
+            </button>
+          </div>
+
+          <div id="weeklyBossSection" class="pt-1.5 border-t border-slate-800 space-y-1">
+            <div class="flex items-center justify-between text-[11px]">
+              <span id="bossNameTitle" class="font-black text-rose-300 truncate">🐉 تنين التسويف</span>
+              <span id="bossHpBadge" class="font-mono font-black text-rose-200">500/500 HP</span>
+            </div>
+            <div class="w-full h-2 bg-slate-950 rounded-full overflow-hidden">
+              <div id="bossHpBar" class="h-full bg-gradient-to-l from-rose-500 to-amber-400 transition-all" style="width: 100%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. المهام السرية المتجددة -->
+      <div class="bg-slate-900/95 border border-purple-500/40 rounded-2xl p-3.5 space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-1.5">
+            <span class="text-lg">🕵️</span>
+            <h3 class="text-xs sm:text-sm font-black text-purple-300">المهام السرية اليومية المتجددة</h3>
+            <span id="secretQuestsLockTag" class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-200 text-[10px] font-black">🔒 Lv.3</span>
+          </div>
+          <button onclick="rerollSecretQuests()" class="px-2.5 py-1 rounded-lg bg-purple-500/20 border border-purple-400/40 text-purple-200 text-[11px] font-extrabold">
+            🔄 تجديد
+          </button>
+        </div>
+        <div id="secretQuestsList" class="space-y-2"></div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 2: قوانين الكتاب العملية (ATOMIC HABITS LAWS) ================= -->
+    <section id="tab-laws" class="hidden space-y-4 animate-fade-up">
+      <!-- 1. بطاقة الهوية وسجل الأدلة -->
+      <div class="bg-gradient-to-br from-amber-950/50 via-slate-900 to-emerald-950/40 border-2 border-amber-500/45 rounded-2xl p-4 space-y-3 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-[10px] font-black">
+              جوهر الكتاب • التغيير القائم على الهوية (Identity-Based Habits)
+            </span>
+            <h2 class="text-base sm:text-lg font-black text-white mt-1">🏆 بطاقة الهوية: "أنا شخص منضبط، قارئ، ومتميز"</h2>
+          </div>
+          <div class="px-3 py-1.5 rounded-xl bg-slate-950/90 border border-amber-400/50 text-center">
+            <div id="lawsIdentityVotesCount" class="text-lg font-black text-amber-400 font-mono">0</div>
+            <div class="text-[10px] text-slate-300 font-bold">صوت مثبت لهويتك</div>
+          </div>
+        </div>
+
+        <p class="text-xs text-slate-300 leading-relaxed">
+          كل عادة أو صلاة تنجزها هي <strong class="text-emerald-300">صوت جديد لصالح هويتك</strong>. الأدلة أدناه تُسجّل تلقائياً مع كل إنجاز لتثبت لعقلك أنك هذا الشخص فعلاً:
+        </p>
+
+        <div class="flex gap-2">
+          <input id="manualIdentityEvidenceInput" type="text" placeholder="أضف دليلاً يثبت هويتك اليوم (مثلاً: طبّقت إكسيل بعد القراءة رغم التعب)..."
+            class="flex-1 bg-slate-950/90 border border-slate-700 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400" />
+          <button onclick="addManualIdentityEvidence()"
+            class="px-3.5 py-2 rounded-xl bg-amber-400 text-slate-950 font-black text-xs shrink-0 transition active:scale-95">
+            + تصويت 🗳️
+          </button>
+        </div>
+
+        <div id="identityEvidenceList" class="space-y-1.5 max-h-48 overflow-y-auto"></div>
+      </div>
+
+      <!-- 2. أداة مسح العادات اليومية -->
+      <div class="bg-slate-900/95 border border-emerald-500/40 rounded-2xl p-4 space-y-3 shadow-lg">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 class="text-sm sm:text-base font-black text-emerald-300">📋 أداة مسح العادات اليومية (Habit Scorecard)</h3>
+            <p class="text-xs text-slate-400">القانون 1 (الوعي): صنّف سلوكيات يومك إلى إيجابي (<strong class="text-emerald-400">+</strong>)، سلبي (<strong class="text-rose-400">-</strong>)، أو محايد (<strong class="text-slate-300">=</strong>).</p>
+          </div>
+          <span id="scorecardSummaryBadge" class="px-3 py-1 rounded-xl bg-slate-950 border border-slate-700 text-xs font-black text-emerald-300">
+            الرصيد: +0
+          </span>
+        </div>
+
+        <div class="flex gap-2">
+          <input id="newScorecardInput" type="text" placeholder="اكتب سلوكاً يومياً (مثلاً: فتح الموبايل فور الاستيقاظ)..."
+            class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400" />
+          <button onclick="addScorecardItem()"
+            class="px-3.5 py-2 rounded-xl bg-emerald-500 text-slate-950 font-black text-xs shrink-0 transition active:scale-95">
+            + إضافة
+          </button>
+        </div>
+
+        <div id="habitScorecardList" class="space-y-2"></div>
+      </div>
+
+      <!-- 3. تصميم البيئة -->
+      <div class="bg-slate-900/95 border border-sky-500/40 rounded-2xl p-4 space-y-3 shadow-lg">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <h3 class="text-sm sm:text-base font-black text-sky-300">🏠 تصميم البيئة (اجعل الإشارات واضحة والاحتكاك صفراً)</h3>
+            <p class="text-xs text-slate-400">جهّز بيئتك مسبقاً لتسهيل العادات الجيدة وتصعيب المشتتات (+10 💎 لكل تجهيز):</p>
+          </div>
+          <span id="envChecklistCount" class="px-2.5 py-1 rounded-xl bg-sky-500/20 border border-sky-400/40 text-sky-200 text-xs font-black">
+            0/6
+          </span>
+        </div>
+        <div id="environmentChecklistContainer" class="space-y-2"></div>
+      </div>
+
+      <!-- 4. خطط الطوارئ -->
+      <div class="bg-slate-900/95 border border-purple-500/40 rounded-2xl p-4 space-y-3 shadow-lg">
+        <div>
+          <h3 class="text-sm sm:text-base font-black text-purple-300">🛡️ خطط الطوارئ: قاعدة "إذا حدث X سأفعل Y"</h3>
+          <p class="text-xs text-slate-400">حوّل كل عقبة متوقعة في الجامعة أو المواصلات إلى رد فعل تلقائي يحمي استمراريتك:</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <input id="obstacleIfInput" type="text" placeholder="إذا حدث [العقبة]..."
+            class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-400" />
+          <div class="flex gap-2">
+            <input id="obstacleThenInput" type="text" placeholder="سأفعل [الحل الفوري]..."
+              class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-400" />
+            <button onclick="addObstaclePlan()"
+              class="px-3.5 py-2 rounded-xl bg-purple-500 text-white font-black text-xs shrink-0 transition active:scale-95">
+              حفظ
+            </button>
+          </div>
+        </div>
+
+        <div id="obstaclesListContainer" class="space-y-2"></div>
+      </div>
+    
+      <!-- 5. عقد العادات -->
+      <div class="bg-slate-900/95 border border-rose-500/40 rounded-2xl p-4 space-y-2.5 shadow-lg">
+        <h3 class="text-sm sm:text-base font-black text-rose-300">🤝 عقد العادات (Habit Contract)</h3>
+        <p class="text-xs text-slate-400">اجعل العادة علنية: التزامك، ومن يتابعك، وما التبعة إن فوّتّ يومين متتاليين.</p>
+        <input id="contractCommit" type="text" oninput="saveContractField('commit', this.value)" placeholder="التزامي: (مثلاً: قراءة 10 صفحات + إكسيل بعد كل صلاة)"
+          class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-rose-400" />
+        <input id="contractPartner" type="text" oninput="saveContractField('partner', this.value)" placeholder="شريك المتابعة (صديق / أخ يسألني آخر الأسبوع)"
+          class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-rose-400" />
+        <input id="contractPenalty" type="text" oninput="saveContractField('penalty', this.value)" placeholder="التبعة لو فوّتّ مرتين متتاليتين"
+          class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-rose-400" />
+      </div>
+
+      <!-- 6. المراجعة الأسبوعية -->
+      <div class="bg-slate-900/95 border border-emerald-500/40 rounded-2xl p-4 space-y-2.5 shadow-lg">
+        <h3 class="text-sm sm:text-base font-black text-emerald-300">📝 المراجعة الأسبوعية (تحسين 1%)</h3>
+        <input id="reviewWin" type="text" placeholder="ما الذي نجح هذا الأسبوع؟"
+          class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400" />
+        <input id="reviewMiss" type="text" placeholder="ما الذي تعثّر ولماذا؟"
+          class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400" />
+        <input id="reviewTweak" type="text" placeholder="تعديل صغير واحد للأسبوع القادم"
+          class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400" />
+        <button onclick="saveWeeklyReview()" class="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black text-sm transition active:scale-95">حفظ المراجعة (+20 XP)</button>
+        <div id="reviewLast" class="text-[11px] text-slate-400"></div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 3: الصناديق والمتجر (SLOTS, VAULT & GEM SHOP) ================= -->
+    <section id="tab-rewards" class="hidden space-y-4 animate-fade-up">
+      <div class="bg-slate-900/95 border border-amber-500/40 rounded-2xl p-4 space-y-3.5 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 class="text-base sm:text-lg font-black text-white">🎰 ماكينة الصناديق المتباينة (Variable Ratio)</h2>
+            <p class="text-xs text-slate-400">مكافآت متباينة (70% فوز مباشر / 30% شحنة حظ +20% و +5 💎) مع ضمان 100% بعد جلستين!</p>
+          </div>
+          <button onclick="openSlotMachineModal('سحب مباشر من الماكينة 🎰', 'gold', true)"
+            class="px-4 py-2.5 rounded-xl bg-gradient-to-l from-amber-500 via-yellow-400 to-amber-300 text-slate-950 font-black text-xs sm:text-sm shadow-lg shadow-amber-500/25 transition active:scale-95">
+            🎰 تجربة لفة الآن
+          </button>
+        </div>
+
+        <div class="bg-slate-950/85 border border-purple-500/35 rounded-xl p-3 space-y-2">
+          <div class="flex items-center justify-between text-xs font-black">
+            <span class="text-purple-300">🔮 عداد الحظ التراكمي (يضمن الفوز عند 100%):</span>
+            <span id="rewardsLuckLabel" class="text-amber-300 font-mono">20%</span>
+          </div>
+          <div class="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-slate-800">
+            <div id="rewardsLuckBar" class="h-full bg-gradient-to-l from-purple-500 via-amber-400 to-emerald-400 transition-all duration-500" style="width: 20%"></div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+          <div class="bg-orange-950/35 border border-orange-500/40 rounded-xl p-2">
+            <div class="font-black text-orange-300">🥉 برونزي</div>
+            <div class="text-[10px] text-slate-300">تدرج 1–2 • +15 💎</div>
+          </div>
+          <div class="bg-slate-800/70 border border-slate-400/40 rounded-xl p-2">
+            <div class="font-black text-slate-200">🥈 فضي</div>
+            <div class="text-[10px] text-slate-300">تدرج 3–4 • +30 💎</div>
+          </div>
+          <div class="bg-amber-950/40 border border-amber-400/50 rounded-xl p-2">
+            <div class="font-black text-amber-300">🥇 ذهبي</div>
+            <div class="text-[10px] text-slate-300">تدرج 5–6 • +50 💎</div>
+          </div>
+          <div class="bg-purple-950/45 border border-purple-400/55 rounded-xl p-2">
+            <div class="font-black text-purple-300">💠 أسطوري</div>
+            <div class="text-[10px] text-slate-300">تدرج 7+ • +85 💎</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- متجر الجواهر -->
+      <div class="bg-slate-900/95 border border-sky-500/40 rounded-2xl p-4 space-y-3 shadow-lg">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <h3 class="text-sm sm:text-base font-black text-sky-300">💎 متجر الجواهر والمكافآت الكبرى</h3>
+            <p class="text-xs text-slate-400">استبدل جواهرك المتراكمة بجلسات Clash of Clans أو إيداع لحصالة التابلت أو دروع حماية:</p>
+          </div>
+          <span class="px-3 py-1 rounded-xl bg-sky-500/20 border border-sky-400/45 text-sky-200 font-black text-xs">
+            رصيدك: <span id="shopGemsDisplay" class="font-mono">0</span> 💎
+          </span>
+        </div>
+        <div id="gemShopContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+      </div>
+
+      <!-- محفظة المكافآت المؤجلة -->
+      <div class="bg-slate-900/95 border border-emerald-500/35 rounded-2xl p-4 space-y-3 shadow-lg">
+        <div class="flex items-center justify-between gap-2">
+          <h3 class="text-sm sm:text-base font-black text-emerald-300">📌 محفظة المكافآت المؤجلة (<span id="vaultCountBadge">0</span>)</h3>
+          <span class="text-xs font-extrabold text-sky-300">🛡️ دروع حماية السلسلة: <strong id="vaultShieldsCount">1</strong></span>
+        </div>
+        <div id="vaultListContainer" class="space-y-2"></div>
+      </div>
+
+      <!-- كتالوج المكافآت -->
+      <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-4 space-y-3 shadow-md">
+        <h3 class="text-sm sm:text-base font-black text-white">🎁 كتالوج المكافآت المتباينة (Clash of Clans، شطرنج، قهوة، حصالة التابلت)</h3>
+        <div id="rewardsCatalogGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-80 overflow-y-auto"></div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 4: شجرة التطور والكتب (LEVEL UNLOCKS & COOKIE JAR) ================= -->
+    <section id="tab-progression" class="hidden space-y-4 animate-fade-up">
+      <div class="bg-slate-900/95 border border-amber-500/40 rounded-2xl p-4 space-y-3 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 class="text-base sm:text-lg font-black text-amber-300">🌳 شجرة التطور وفتح المميزات مع الليفل (Lv.1 → Lv.10)</h2>
+            <p class="text-xs text-slate-400">كل مستوى جديد يفتح أداة أو مضاعفاً جديداً تلقائياً!</p>
+          </div>
+          <button onclick="earnDemoXpBoost()"
+            class="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/45 text-amber-200 font-extrabold text-xs transition active:scale-95">
+            ⚡ +60 XP اختبار ترقية
+          </button>
+        </div>
+        <div id="unlockTreeList" class="space-y-2"></div>
+      </div>
+
+      <!-- الثيمات الملكية -->
+      <div class="bg-slate-900/95 border border-purple-500/40 rounded-2xl p-4 space-y-3 shadow-md">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-sm sm:text-base font-black text-purple-300">🎨 ثيمات الألوان الملكية</h3>
+            <p class="text-xs text-slate-400">تُفتح تلقائياً عند الوصول إلى <strong class="text-amber-300">المستوى 8</strong>.</p>
+          </div>
+          <span id="themeUnlockStatus" class="px-2.5 py-0.5 rounded-lg bg-slate-800 text-xs font-black text-slate-300">🔒 المستوى 8</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <button onclick="setAppTheme('emerald')" class="p-2.5 rounded-xl bg-emerald-950/60 border border-emerald-500/50 text-emerald-300 font-black text-xs">🌿 الزمردي</button>
+          <button onclick="setAppTheme('royal')" class="p-2.5 rounded-xl bg-amber-950/60 border border-amber-500/50 text-amber-300 font-black text-xs">👑 الذهبي الملكي</button>
+          <button onclick="setAppTheme('cyber')" class="p-2.5 rounded-xl bg-cyan-950/60 border border-cyan-500/50 text-cyan-300 font-black text-xs">💠 النيون</button>
+          <button onclick="setAppTheme('volcanic')" class="p-2.5 rounded-xl bg-rose-950/60 border border-rose-500/50 text-rose-300 font-black text-xs">🌋 البركاني</button>
+        </div>
+      </div>
+
+      <!-- جَرّة الكوكيز -->
+      <div class="bg-slate-900/95 border border-orange-500/40 rounded-2xl p-4 space-y-3 shadow-md">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <div class="flex items-center gap-1.5">
+              <h3 class="text-sm sm:text-base font-black text-orange-300">🍪 جَرّة الكوكيز (Can't Hurt Me)</h3>
+              <span id="cookieLockTag" class="px-2 py-0.5 rounded-md bg-orange-500/20 border border-orange-400/40 text-orange-200 text-[10px] font-black">
+                🔒 المستوى 2
+              </span>
+            </div>
+            <p class="text-xs text-slate-400">اسحب انتصاراً سابقاً وقت التعب لرفع طاقتك فوراً (+10 💎)!</p>
+          </div>
+          <button onclick="pullCookieFromJar()"
+            class="px-3.5 py-2 rounded-xl bg-gradient-to-l from-orange-500 to-amber-500 text-slate-950 font-black text-xs transition active:scale-95">
+            🍪 اسحب انتصاراً (+10 💎)
+          </button>
+        </div>
+
+        <div id="pulledCookieBanner" class="hidden bg-orange-500/15 border border-orange-400/50 rounded-xl p-3 text-center text-xs sm:text-sm font-black text-orange-200"></div>
+
+        <div class="flex gap-2">
+          <input id="newCookieInput" type="text" placeholder="اكتب موقفاً تغلبت فيه على التعب أو الكسل..."
+            class="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-orange-500" />
+          <button onclick="addCookieNote()"
+            class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-orange-300 font-extrabold text-xs">
+            + حفظ
+          </button>
+        </div>
+        <div id="cookiesListContainer" class="space-y-1.5 max-h-40 overflow-y-auto"></div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 5: المتتبع 31 يوم ورفع الموقع (TRACKER & TIINY HOST) ================= -->
+    <section id="tab-tracker" class="hidden space-y-4 animate-fade-up">
+      <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-4 space-y-3 shadow-md">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 class="text-base font-black text-white">📅 متتبع الاستمرارية 31 يوم (لا تفوّت مرتين ⚠️)</h2>
+            <p class="text-xs text-slate-400">اضغط على أي يوم لتسجيله أو حمايته بدرع السلسلة.</p>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button onclick="simulateMissedYesterdayDemo()"
+              class="px-2.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 text-amber-300 font-extrabold text-[11px] transition">
+              ⚠️ محاكاة فوات أمس
+            </button>
+            <button onclick="useStreakShield()"
+              class="px-3 py-1.5 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/45 text-sky-200 font-extrabold text-xs transition active:scale-95">
+              🛡️ درع (<span id="trackerShieldsCount">1</span>)
+            </button>
+          </div>
+        </div>
+
+        <div id="monthlyGridContainer" class="grid grid-cols-7 gap-1.5 sm:gap-2"></div>
+      </div>
+
+      <!-- رفع التحديث على Tiiny Host والنسخ الاحتياطي -->
+      <div class="bg-slate-900/95 border border-amber-500/35 rounded-2xl p-4 space-y-3 shadow-md">
+        <h3 class="text-sm sm:text-base font-black text-amber-300">🚀 رفع التحديث على Tiiny Host والنسخ الاحتياطي</h3>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          حمّل ملف <strong class="text-white">index.html</strong> النظيف بضغطة واحدة وارفعه مباشرة على رابط موقعك في <strong class="text-amber-300">Tiiny Host</strong>:
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <button onclick="exportTiinyHostHTML()"
+            class="sm:col-span-2 py-3 px-4 rounded-xl bg-gradient-to-l from-amber-500 via-yellow-400 to-amber-300 text-slate-950 font-black text-xs sm:text-sm shadow-lg shadow-amber-500/20 transition active:scale-95">
+            ⬇️ تحميل ملف index.html جاهز للرفع على Tiiny Host
+          </button>
+          <button onclick="exportBackupJSON()"
+            class="py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-emerald-300 font-extrabold text-xs transition active:scale-95">
+            📤 تصدير بياناتي (JSON)
+          </button>
+          <label class="py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-sky-300 font-extrabold text-xs text-center cursor-pointer transition active:scale-95">
+            📥 استيراد بياناتي (JSON)
+            <input type="file" accept=".json" onchange="importBackupJSON(event)" class="hidden" />
+          </label>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= شريط التنقل السفلي الثابت (5 تبويبات مهيأة لـ iPhone 11) ================= -->
+  <nav class="fixed bottom-0 inset-x-0 z-30 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800 safe-bottom">
+    <div class="max-w-3xl mx-auto grid grid-cols-5 gap-1 px-1.5 pt-1.5">
+      <button onclick="switchTab('today')" data-tab="today"
+        class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-emerald-400 bg-emerald-500/10 transition">
+        <span class="text-base sm:text-lg leading-none">🎯</span>
+        <span class="text-[10px] sm:text-[11px] font-black mt-1 truncate">اليوم</span>
+      </button>
+      <button onclick="switchTab('laws')" data-tab="laws"
+        class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-200 transition">
+        <span class="text-base sm:text-lg leading-none">⚖️</span>
+        <span class="text-[10px] sm:text-[11px] font-bold mt-1 truncate">قوانين الكتاب</span>
+      </button>
+      <button onclick="switchTab('rewards')" data-tab="rewards"
+        class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-200 transition">
+        <span class="text-base sm:text-lg leading-none">🎰</span>
+        <span class="text-[10px] sm:text-[11px] font-bold mt-1 truncate">الصناديق</span>
+      </button>
+      <button onclick="switchTab('progression')" data-tab="progression"
+        class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-200 transition">
+        <span class="text-base sm:text-lg leading-none">🌳</span>
+        <span class="text-[10px] sm:text-[11px] font-bold mt-1 truncate">التطور</span>
+      </button>
+      <button onclick="switchTab('tracker')" data-tab="tracker"
+        class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-200 transition">
+        <span class="text-base sm:text-lg leading-none">📅</span>
+        <span class="text-[10px] sm:text-[11px] font-bold mt-1 truncate">المتتبع</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ================= MODAL 1: مؤقت التركيز + طقس البداية وتجميع المغريات ================= -->
+  <div id="focusTimerModal" class="hidden fixed inset-0 z-40 bg-black/82 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-md w-full p-5 space-y-4 shadow-2xl animate-fade-up">
+      <div class="flex items-center justify-between">
+        <span id="timerModalChestTag" class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-black">
+          🥉 صندوق برونزي
+        </span>
+        <button onclick="closeFocusTimerModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white font-bold">✕</button>
+      </div>
+
+      <div class="text-center space-y-1">
+        <h3 id="timerModalHabitName" class="text-base sm:text-lg font-black text-white">اسم العادة</h3>
+        <p id="timerModalTargetInfo" class="text-xs text-slate-400 font-bold"></p>
+      </div>
+
+      <div class="bg-amber-500/15 border border-amber-500/45 rounded-2xl p-3 space-y-2">
+        <div class="text-xs font-black text-amber-300">✨ طقس البداية وتجميع المغريات (Temptation Bundling):</div>
+        <label class="flex items-center gap-2.5 cursor-pointer text-xs text-amber-100 font-bold">
+          <input id="temptationRitualCheckbox" type="checkbox" class="w-4 h-4 accent-amber-400 rounded" />
+          <span id="timerModalTemptationText">🍬 جهّزت اللبانة المفضلة / المشروب وأغلقت المشتتات قبل البدء</span>
+        </label>
+      </div>
+
+      <div class="bg-slate-950 border border-slate-800 rounded-2xl py-4 text-center space-y-2.5">
+        <div id="focusTimerClock" class="text-4xl sm:text-5xl font-black text-emerald-400 font-mono">20:00</div>
+        <div class="flex flex-wrap justify-center gap-2">
+          <button onclick="setFocusTimerMinutes(2)" class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-amber-300 font-extrabold">
+            ⚡ قاعدة الدقيقتين (02:00)
+          </button>
+          <button onclick="startRestTimer()" class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-sky-300 font-extrabold">☕ راحة</button>
+          <button onclick="resetFocusTimerClock()" class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 font-bold">
+            🔄 الوقت الكامل
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2.5">
+        <button id="focusTimerToggleBtn" onclick="toggleFocusTimerRun()"
+          class="py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-extrabold text-sm transition active:scale-95">
+          ▶️ بدء المؤقت
+        </button>
+        <button onclick="finishFocusTimerHabit()"
+          class="py-3 rounded-xl bg-gradient-to-l from-emerald-500 to-emerald-400 text-slate-950 font-black text-sm shadow-lg transition active:scale-95">
+          ✅ أتممت — افتح الصندوق!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 2: ماكينة الصناديق المتباينة (3-Reel Slot Machine) ================= -->
+  <div id="slotMachineModal" class="hidden fixed inset-0 z-50 bg-black/88 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-slate-900 border-2 border-amber-500/60 rounded-3xl max-w-md w-full p-5 sm:p-6 space-y-4 shadow-2xl text-center animate-fade-up">
+
+      <div class="flex items-center justify-between gap-2">
+        <span id="slotBoxTierBadge" class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/45 text-amber-200 text-xs font-black">
+          🥉 صندوق برونزي
+        </span>
+        <span id="slotSourceBadge" class="text-[11px] text-slate-400 font-bold truncate max-w-[180px]">
+          إتمام عادة
+        </span>
+      </div>
+
+      <div class="bg-slate-950 border-2 border-slate-800 rounded-2xl p-3.5 space-y-2 shadow-inner">
+        <div class="grid grid-cols-3 gap-2.5">
+          <div id="slotReel0" class="h-20 sm:h-24 rounded-xl bg-gradient-to-b from-slate-800 via-slate-900 to-slate-800 border border-slate-700 flex items-center justify-center text-4xl sm:text-5xl">💎</div>
+          <div id="slotReel1" class="h-20 sm:h-24 rounded-xl bg-gradient-to-b from-slate-800 via-slate-900 to-slate-800 border border-slate-700 flex items-center justify-center text-4xl sm:text-5xl">🏰</div>
+          <div id="slotReel2" class="h-20 sm:h-24 rounded-xl bg-gradient-to-b from-slate-800 via-slate-900 to-slate-800 border border-slate-700 flex items-center justify-center text-4xl sm:text-5xl">♟️</div>
+        </div>
+        <div id="slotCaptionText" class="text-xs font-extrabold text-amber-300 animate-pulse">
+          🎲 البكرات تدور... هل ستحصل على غنيمة أم شحنة حظ؟
+        </div>
+      </div>
+
+      <div id="slotNearMissPanel" class="hidden space-y-3 animate-fade-up">
+        <div class="bg-purple-500/15 border border-purple-400/45 rounded-2xl p-3.5 space-y-1">
+          <h3 class="text-base font-black text-purple-300">⚡ تعزيز الانضباط الذاتي (Near-Miss)!</h3>
+          <p class="text-xs text-slate-200">حصلت على <strong class="text-sky-300">+5 💎 ترضية</strong> وارتفع <strong class="text-amber-300">عداد الحظ +20%</strong> للجلسة القادمة!</p>
+          <div id="slotNewLuckText" class="text-xs font-black text-emerald-300 pt-1">🔮 عداد الحظ الآن: 40%</div>
+        </div>
+        <button onclick="closeSlotMachineModal()"
+          class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-sm transition active:scale-95">
+          💪 متابعة (نحو الصندوق المضمون)
+        </button>
+      </div>
+
+      <div id="slotWinPanel" class="hidden space-y-3 animate-fade-up">
+        <div class="bg-gradient-to-br from-amber-500/20 via-emerald-500/15 to-slate-900 border border-amber-400/55 rounded-2xl p-4 space-y-1.5">
+          <div class="flex items-center justify-center gap-2">
+            <span id="slotWonCategoryTag" class="px-2.5 py-0.5 rounded-full bg-slate-950/80 text-amber-300 text-xs font-black">فئة</span>
+          </div>
+          <h3 id="slotWonTitleText" class="text-base sm:text-lg font-black text-white leading-snug pt-1">اسم المكافأة</h3>
+        </div>
+        <div class="grid grid-cols-1 gap-2">
+          <button onclick="claimSlotRewardNow()"
+            class="w-full py-3 rounded-xl bg-gradient-to-l from-emerald-500 to-emerald-400 text-slate-950 font-black text-sm shadow-lg transition active:scale-95">
+            ✅ استلام وتنفيذ الآن
+          </button>
+          <button onclick="saveSlotRewardToVault()"
+            class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-300 font-extrabold text-xs sm:text-sm transition active:scale-95">
+            📌 حفظ في محفظة المكافآت المؤجلة
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= MODAL 3: احتفال ترقية المستوى ================= -->
+  <div id="levelUnlockModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-slate-900 border-2 border-emerald-400/60 rounded-3xl max-w-sm w-full p-6 space-y-4 text-center shadow-2xl animate-fade-up">
+      <div class="text-5xl">🎊</div>
+      <div class="space-y-1">
+        <span id="unlockModalLevelTag" class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/50 text-amber-300 text-xs font-black">LEVEL UP!</span>
+        <h3 id="unlockModalTitle" class="text-xl font-black text-white pt-1">وصلت إلى المستوى 2!</h3>
+        <p id="unlockModalDesc" class="text-xs sm:text-sm text-emerald-300 font-bold leading-relaxed"></p>
+      </div>
+      <button onclick="closeLevelUnlockModal()"
+        class="w-full py-3 rounded-xl bg-gradient-to-l from-emerald-500 to-amber-400 text-slate-950 font-black text-sm shadow-lg transition active:scale-95">
+        🚀 رائع! متابعة الإنجاز
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 4: إضافة أو تعديل عادة ================= -->
+  <div id="habitEditorModal" class="hidden fixed inset-0 z-40 bg-black/82 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-md w-full p-5 space-y-3 shadow-2xl animate-fade-up my-auto">
+      <div class="flex items-center justify-between">
+        <h3 id="habitEditorModalTitle" class="text-base font-black text-white">➕ إضافة عادة ذرية مكدّسة</h3>
+        <button onclick="closeHabitEditorModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white font-bold">✕</button>
+      </div>
+
+      <div class="space-y-2.5 text-xs sm:text-sm">
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">اسم العادة:</label>
+          <input id="habitTitleInput" type="text" placeholder="مثلاً: إكسيل — الفترة المسائية"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-slate-300 font-bold mb-1">⏰ الوقت بالساعة:</label>
+            <input id="habitTimeInput" type="text" placeholder="مثلاً: 6:10 م"
+              class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400" />
+          </div>
+          <div>
+            <label class="block text-slate-300 font-bold mb-1">⛓️ الصلاة/العادة السابقة:</label>
+            <select id="habitAnchorSelect"
+              class="w-full bg-slate-800 border border-slate-700 rounded-xl px-2.5 py-2 text-white focus:outline-none focus:border-emerald-500">
+              <option value="قبل الفجر">قبل الفجر</option>
+              <option value="بعد صلاة الفجر">بعد صلاة الفجر</option>
+              <option value="بعد أذكار الصباح (الفجر)">بعد أذكار الصباح (الفجر)</option>
+              <option value="بعد صلاة الظهر">بعد صلاة الظهر</option>
+              <option value="بعد أذكار المساء (الظهر)">بعد أذكار المساء (الظهر)</option>
+              <option value="بعد صلاة العصر">بعد صلاة العصر</option>
+              <option value="بعد صلاة المغرب">بعد صلاة المغرب</option>
+              <option value="بعد صلاة العشاء">بعد صلاة العشاء</option>
+              <option value="بعد العودة من الجامعة">بعد العودة من الجامعة</option>
+              <option value="بعد القهوة">بعد القهوة</option>
+              <option value="بعد التمرين (بعد العشاء)">بعد التمرين (بعد العشاء)</option>
+              <option value="بعد القراءة مباشرة">بعد القراءة مباشرة</option>
+              <option value="بعد المذاكرة مباشرة">بعد المذاكرة مباشرة</option>
+              <option value="قبل النوم">قبل النوم</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-slate-300 font-bold mb-1">📍 المكان:</label>
+            <input id="habitLocationInput" type="text" placeholder="مثلاً: المكتب / اللابتوب"
+              class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500" />
+          </div>
+          <div>
+            <label class="block text-slate-300 font-bold mb-1">🍬 المغري المرافق:</label>
+            <input id="habitTemptationInput" type="text" placeholder="مثلاً: اللبانة المفضلة"
+              class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="block text-slate-300 font-bold mb-1">المدة/الكمية:</label>
+            <input id="habitBaseTargetInput" type="number" min="1" value="20"
+              class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500" />
+          </div>
+          <div>
+            <label class="block text-slate-300 font-bold mb-1">الوحدة:</label>
+            <input id="habitUnitInput" type="text" value="دقيقة"
+              class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500" />
+          </div>
+          <div>
+            <label class="block text-slate-300 font-bold mb-1">زيادة التدرج:</label>
+            <input id="habitStepInput" type="number" min="1" value="5"
+              class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">⚡ نسخة الدقيقتين (Two-Minute Rule):</label>
+          <input id="habitTwoMinInput" type="text" placeholder="مثلاً: فتح ملف الإكسيل وتطبيق معادلة واحدة فقط"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400" />
+        </div>
+      </div>
+
+      <div class="flex gap-2 pt-1">
+        <button onclick="saveHabitFromEditor()"
+          class="flex-1 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm transition active:scale-95">
+          حفظ العادة ✅
+        </button>
+        <button onclick="closeHabitEditorModal()"
+          class="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-sm">
+          إلغاء
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 5: ضبط دقائق مواقيت الزرقا يدوياً (اختياري) ================= -->
+  <div id="prayerOffsetModal" class="hidden fixed inset-0 z-50 bg-black/82 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-sm w-full p-5 space-y-4 shadow-2xl animate-fade-up">
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm sm:text-base font-black text-white">⚙️ ضبط دقائق الأذان — الزرقا، دمياط</h3>
+        <button onclick="closePrayerOffsetModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white font-bold">✕</button>
+      </div>
+      <p class="text-xs text-slate-400 leading-relaxed">
+        المواقيت محسوبة فلكياً بدقة لمدينة <strong class="text-emerald-300">الزرقا، دمياط (31.209°N, 31.635°E)</strong> وفق الهيئة المصرية العامة للمساحة. يمكنك إضافة أو طرح دقائق (+/-) لمطابقة أذان مسجدك بالثانية:
+      </p>
+      <div id="prayerOffsetInputsList" class="space-y-2 text-xs"></div>
+      <div class="flex gap-2 pt-1">
+        <button onclick="savePrayerOffsets()" class="flex-1 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black text-xs">حفظ التعديلات ✅</button>
+        <button onclick="resetPrayerOffsets()" class="px-3 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs">إعادة التصفير</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const CLEAN_SOURCE_HTML = '<!DOCTYPE html>
+' + document.documentElement.outerHTML;
+    const STORAGE_KEY = 'atomic_habits_zarqa_damietta_v7';
+
+    // ================= 1. محرك حساب مواقيت الصلاة فلكياً لمدينة الزرقا، دمياط =================
+    const ZARQA_COORDS = { lat: 31.209, lon: 31.635, tz: 2 };
+
+    function computeZarqaPrayerTimes(dateObj = new Date(), offsets = {}) {
+      const d2r = deg => (deg * Math.PI) / 180;
+      const r2d = rad => (rad * 180) / Math.PI;
+
+      const year = dateObj.getFullYear();
+      const month = dateObj.getMonth() + 1;
+      const day = dateObj.getDate();
+
+      let y = year, m = month;
+      if (m <= 2) { y -= 1; m += 12; }
+      const A = Math.floor(y / 100);
+      const B = 2 - A + Math.floor(A / 4);
+      const jd = Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + day + B - 1524.5;
+
+      const D = jd - 2451545.0;
+      const g = (357.529 + 0.98560028 * D) % 360;
+      const q = (280.459 + 0.98564736 * D) % 360;
+      const L = (q + 1.915 * Math.sin(d2r(g)) + 0.020 * Math.sin(d2r(2 * g))) % 360;
+      const e = 23.439 - 0.00000036 * D;
+      const RA = r2d(Math.atan2(Math.cos(d2r(e)) * Math.sin(d2r(L)), Math.cos(d2r(L)))) / 15;
+      const decl = r2d(Math.asin(Math.sin(d2r(e)) * Math.sin(d2r(L))));
+      const eqTime = (q / 15) - ((RA + 24) % 24);
+
+      const dhuhrHours = 12 + ZARQA_COORDS.tz - (ZARQA_COORDS.lon / 15) - eqTime;
+
+      const sunAngleTime = (angle) => {
+        const num = -Math.sin(d2r(angle)) - Math.sin(d2r(ZARQA_COORDS.lat)) * Math.sin(d2r(decl));
+        const den = Math.cos(d2r(ZARQA_COORDS.lat)) * Math.cos(d2r(decl));
+        const cosH = Math.max(-1, Math.min(1, num / den));
+        return r2d(Math.acos(cosH)) / 15;
+      };
+
+      const asrAngle = -r2d(Math.atan(1 / (1 + Math.tan(d2r(Math.abs(ZARQA_COORDS.lat - decl))))));
+
+      const rawHours = {
+        fajr: dhuhrHours - sunAngleTime(19.5),
+        dhuhr: dhuhrHours + (1 / 60),
+        asr: dhuhrHours + sunAngleTime(asrAngle),
+        maghrib: dhuhrHours + sunAngleTime(0.833),
+        isha: dhuhrHours + sunAngleTime(17.5)
+      };
+
+      const toMinutes = (hrs, offMin = 0) => Math.round(hrs * 60) + (Number(offMin) || 0);
+      const minsMap = {
+        fajr: toMinutes(rawHours.fajr, offsets.fajr),
+        dhuhr: toMinutes(rawHours.dhuhr, offsets.dhuhr),
+        asr: toMinutes(rawHours.asr, offsets.asr),
+        maghrib: toMinutes(rawHours.maghrib, offsets.maghrib),
+        isha: toMinutes(rawHours.isha, offsets.isha)
+      };
+
+      const format12Ar = (totalMins) => {
+        const mNorm = ((totalMins % 1440) + 1440) % 1440;
+        const h24 = Math.floor(mNorm / 60);
+        const mm = mNorm % 60;
+        const suffix = h24 >= 12 ? 'م' : 'ص';
+        const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+        return `${h12}:${String(mm).padStart(2, '0')} ${suffix}`;
+      };
+
+      return {
+        mins: minsMap,
+        formatted: {
+          fajr: format12Ar(minsMap.fajr),
+          dhuhr: format12Ar(minsMap.dhuhr),
+          asr: format12Ar(minsMap.asr),
+          maghrib: format12Ar(minsMap.maghrib),
+          isha: format12Ar(minsMap.isha)
+        }
+      };
+    }
+
+    function getNextPrayerInfo(prayerData) {
+      const now = new Date();
+      const nowMins = now.getHours() * 60 + now.getMinutes();
+      const order = [
+        { key: 'fajr', name: 'الفجر' },
+        { key: 'dhuhr', name: 'الظهر' },
+        { key: 'asr', name: 'العصر' },
+        { key: 'maghrib', name: 'المغرب' },
+        { key: 'isha', name: 'العشاء' }
+      ];
+      for (const item of order) {
+        const pMins = prayerData.mins[item.key];
+        if (pMins > nowMins) {
+          const diff = pMins - nowMins;
+          const h = Math.floor(diff / 60);
+          const m = diff % 60;
+          const remStr = h > 0 ? `${h} س و ${m} د` : `${m} دقيقة`;
+          return `📍 الزرقا • القادم: صلاة ${item.name} (${prayerData.formatted[item.key]}) — باقي ${remStr}`;
+        }
+      }
+      return `📍 الزرقا • القادم: فجر الغد (${prayerData.formatted.fajr})`;
+    }
+
+    // ================= 2. محرك المؤثرات الصوتية المدمج (Web Audio API) =================
+    const SoundEngine = {
+      ctx: null,
+      init() {
+        try {
+          if (!this.ctx) {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (AudioCtx) this.ctx = new AudioCtx();
+          }
+          if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume().catch(() => {});
+        } catch (e) {}
+      },
+      tone(freq, dur = 0.12, type = 'sine', vol = 0.12, delay = 0, endFreq = null) {
+        if (!state.soundEnabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime + delay;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, now);
+          if (endFreq) osc.frequency.exponentialRampToValueAtTime(endFreq, now + dur);
+          gain.gain.setValueAtTime(vol, now);
+          gain.gain.exponentialRampToValueAtTime(0.0008, now + dur);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + dur);
+        } catch (e) {}
+      },
+      playClick() { this.tone(720, 0.035, 'triangle', 0.06, 0, 420); },
+      playGem(combo = 1) {
+        const lift = Math.min(260, combo * 28);
+        [1046.5, 1318.5, 1568.0, 2093.0].forEach((f, i) => this.tone(f + lift, 0.13, 'sine', 0.11, i * 0.045));
+      },
+      playTick() { this.tone(820, 0.025, 'square', 0.045, 0, 310); },
+      playReelStop(idx) {
+        const base = [340, 440, 587.33][idx] || 420;
+        this.tone(160, 0.07, 'sine', 0.15, 0, 55);
+        this.tone(base, 0.13, 'triangle', 0.14, 0.02, base * 1.18);
+      },
+      playNearMiss() {
+        this.tone(240, 0.36, 'sawtooth', 0.09, 0, 780);
+        this.tone(480, 0.25, 'triangle', 0.11, 0.14, 960);
+      },
+      playWin(tier = 'bronze') {
+        [523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) => {
+          this.tone(f, i === 4 ? 0.35 : 0.12, 'triangle', 0.14, i * 0.07);
+        });
+        const coins = tier === 'legendary' ? 7 : tier === 'gold' ? 5 : 3;
+        for (let c = 0; c < coins; c++) {
+          this.tone(1750 + (c % 3) * 280, 0.10, 'sine', 0.08, 0.25 + c * 0.06, 2200);
+        }
+      },
+      playLevelUp() {
+        [523.25, 659.25, 783.99, 1046.5, 1567.98].forEach((f, i) => {
+          this.tone(f, i === 4 ? 0.45 : 0.14, 'sawtooth', 0.10, i * 0.09);
+          this.tone(f * 0.5, i === 4 ? 0.45 : 0.14, 'triangle', 0.13, i * 0.09);
+        });
+      },
+      playGoldenHour() {
+        [880, 1108.73, 1318.51, 1760, 2637].forEach((f, i) => this.tone(f, 0.24, 'sine', 0.12, i * 0.06));
+      },
+      playBossHit() {
+        this.tone(140, 0.16, 'sawtooth', 0.16, 0, 42);
+        this.tone(880, 0.09, 'square', 0.08, 0.02, 220);
+      },
+      playBossDefeat() {
+        [392, 523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) => this.tone(f, 0.22, 'triangle', 0.15, i * 0.08));
+      },
+      previewAll() {
+        if (!state.soundEnabled) { state.soundEnabled = true; updateSoundButton(); }
+        this.playWin('gold');
+        setTimeout(() => this.playLevelUp(), 520);
+        triggerConfetti();
+        showToast('🔔 تم تشغيل استعراض المؤثرات الصوتية!', 'success');
+      }
+    };
+
+    ['touchstart', 'pointerdown', 'click'].forEach(evt => {
+      document.addEventListener(evt, () => SoundEngine.init(), { passive: true });
+    });
+
+    // ================= 3. جدول الأيام (أيام الجامعة vs أيام الإجازة) =================
+    // السبت (6)، الأحد (0)، الإثنين (1)، الثلاثاء (2)، الأربعاء (3) = أيام جامعة / دراسة نشطة
+    // الخميس (4)، الجمعة (5) = أيام إجازة وراحة
+    const DAY_SCHEDULES = {
+      6: { dayName: 'السبت', isUniversityDefault: true, scheduleNote: 'يوم جامعة • خروج 7:45 ص • عودة 5:30 م' },
+      0: { dayName: 'الأحد', isUniversityDefault: true, scheduleNote: 'يوم جامعة • خروج 7:45 ص • عودة 5:30 م' },
+      1: { dayName: 'الإثنين', isUniversityDefault: true, scheduleNote: 'يوم جامعة • خروج 9:15 ص • عودة 5:30 م' },
+      2: { dayName: 'الثلاثاء', isUniversityDefault: true, scheduleNote: 'يوم جامعة • خروج 11:10 ص • عودة 5:30 م' },
+      3: { dayName: 'الأربعاء', isUniversityDefault: false, scheduleNote: 'يوم إجازة • قراءة وإكسيل بعد كل صلاة ومذاكرة بعد العشاء' },
+      4: { dayName: 'الخميس', isUniversityDefault: false, scheduleNote: 'يوم إجازة وراحة • مساحة أوسع للقراءة والإكسيل والمذاكرة' },
+      5: { dayName: 'الجمعة', isUniversityDefault: false, scheduleNote: 'يوم الجمعة • راحة واستشفاء وتركيز هادئ' }
+    };
+
+    function isUniversityModeActive() {
+      if (state.dayModeOverride === 'university') return true;
+      if (state.dayModeOverride === 'rest') return false;
+      const info = DAY_SCHEDULES[state.selectedDay];
+      return info ? Boolean(info.isUniversityDefault) : false;
+    }
+
+    const PRAYERS_META = [
+      { key: 'fajr', label: 'الفجر', anchorMatch: 'الفجر' },
+      { key: 'dhuhr', label: 'الظهر', anchorMatch: 'الظهر' },
+      { key: 'asr', label: 'العصر', anchorMatch: 'العصر' },
+      { key: 'maghrib', label: 'المغرب', anchorMatch: 'المغرب' },
+      { key: 'isha', label: 'العشاء', anchorMatch: 'العشاء' }
+    ];
+
+    const BOX_TIERS = {
+      bronze:    { key: 'bronze',    label: '🥉 صندوق برونزي', gems: 15, icon: '🥉', badge: 'bg-orange-500/20 text-orange-300 border-orange-500/40' },
+      silver:    { key: 'silver',    label: '🥈 صندوق فضي',    gems: 30, icon: '🥈', badge: 'bg-slate-300/20 text-slate-200 border-slate-300/45' },
+      gold:      { key: 'gold',      label: '🥇 صندوق ذهبي',   gems: 50, icon: '🥇', badge: 'bg-amber-500/25 text-amber-300 border-amber-400/55' },
+      legendary: { key: 'legendary', label: '💠 صندوق أسطوري', gems: 85, icon: '💠', badge: 'bg-purple-500/25 text-purple-200 border-purple-400/60' }
+    };
+
+    // ================= 4. بناء العادات حسب نظامك الفعلي (أيام الجامعة vs أيام الإجازة) =================
+    function formatMinsAr(total) {
+      const m = ((Math.round(total) % 1440) + 1440) % 1440;
+      const h24 = Math.floor(m / 60);
+      return `${h24 % 12 === 0 ? 12 : h24 % 12}:${String(m % 60).padStart(2, '0')} ${h24 >= 12 ? 'م' : 'ص'}`;
+    }
+
+    function buildHabitsForCurrentMode(existingHabits = []) {
+      const uniMode = isUniversityModeActive();
+      const isThu = Number(state.selectedDay) === 4;
+      const pd = computeZarqaPrayerTimes(new Date(), state.prayerOffsets || {});
+      const pt = (key, plus = 0) => formatMinsAr(pd.mins[key] + plus);
+      const clock = (h, m = 0) => formatMinsAr(h * 60 + m);
+      const H = (id, o) => ({ category: 'study', stepInc: 5, unit: 'دقيقة', isFrog: false, after: null, location: 'المكتب الهادئ', temptation: '🍬 اللبانة المفضلة', ...o, id });
+      const read = (id, time, anchor, after) => H(id, { title: '📖 قراءة 10 صفحات', time, anchor, after, location: 'ركن القراءة الهادئ', temptation: '☕ فنجان قهوة مظبوط', category: 'chess', steps: [10, 12, 15, 20], unit: 'صفحة', twoMin: 'قراءة صفحة واحدة بتركيز كامل' });
+      const excel = (id, title, time, anchor, after, steps, inc) => H(id, { title, time, anchor, after, location: 'اللابتوب / المكتب', steps, stepInc: inc, twoMin: 'فتح ملف الإكسيل وتطبيق معادلة واحدة فقط' });
+      const adhkar = (id, title, time, after) => H(id, { title, time, anchor: after === 'fajr' ? 'بعد صلاة الفجر' : 'بعد صلاة الظهر', after, location: 'مكان الصلاة', temptation: '🍵 مشروب دافئ بعد الأذكار', category: 'chess', steps: [10, 15, 20], twoMin: 'آية الكرسي والمعوذات فقط' });
+      const workout = (time, anchor, after) => H('h_workout', { title: uniMode ? '🥊 تمرين الكيك بوكسينج' : '🏋️ تمرين الخميس (جيم / كاليسثينكس / نط حبل)', time, anchor, after, location: 'النادي / مساحة التمرين', temptation: '🎧 قائمة التمرين الحماسية', category: 'fitness', steps: [60, 75, 90], stepInc: 15, twoMin: '3 دقائق نط حبل + 10 ضغط لتنشيط الجسم' });
+      const study = (time, anchor) => H('h_study_main', { title: '📚 مذاكرة بومودورو (50 د مذاكرة + 10 د راحة)', time, anchor, after: 'isha', location: 'المكتب الهادئ (الموبايل في وضع الطيران)', temptation: '🍬 اللبانة المفضلة + راحة الـ10 دقائق مضمونة', steps: [50, 100, 150], stepInc: 50, restMin: 10, isFrog: true, twoMin: 'مراجعة أهم 3 نقاط من محاضرة اليوم' });
+
+      const list = [
+        H('h_water', { title: '💧 كوب ماء كبير + نية اليوم', time: pt('fajr', -15), anchor: 'قبل الفجر', location: 'بجانب السرير (الزجاجة جاهزة من الليل)', temptation: '☀️ هواء الفجر المنعش', category: 'fitness', steps: [1, 2, 2, 3], stepInc: 1, unit: 'كوب كبير', twoMin: 'رشفة ماء كبيرة وقراءة هدف اليوم في 30 ثانية' }),
+        adhkar('h_adhkar_am', '🌅 أذكار الصباح', pt('fajr', 8), 'fajr')
+      ];
+
+      if (uniMode) {
+        list.push(
+          H('h_coffee', { title: '☕ جلسة القهوة + مراجعة Anki (إنجليزي / ألماني)', time: clock(17, 45), anchor: 'بعد العودة من الجامعة', after: 'return', location: 'القهوة', temptation: '☕ مشروبك المفضل — اشربه مع مراجعة البطاقات', steps: [10, 15, 20], twoMin: 'مراجعة 5 بطاقات Anki فقط' }),
+          workout(clock(18, 45), 'بعد القهوة', 'return'),
+          study(clock(20, 30), 'بعد التمرين (بعد العشاء)'),
+          excel('h_excel_uni', '📊 إكسيل بعد المذاكرة (10 د)', clock(21, 35), 'بعد المذاكرة مباشرة', 'isha', [10, 15, 20, 25], 5)
+        );
+      } else {
+        list.push(
+          read('h_read_fajr', pt('fajr', 20), 'بعد أذكار الصباح (الفجر)', 'fajr'),
+          excel('h_excel_fajr', '📊 إكسيل بعد القراءة (20 د)', pt('fajr', 45), 'بعد القراءة مباشرة', 'fajr', [20, 25, 30, 40], 10),
+          adhkar('h_adhkar_pm', '🌇 أذكار المساء', pt('dhuhr', 8), 'dhuhr'),
+          read('h_read_dhuhr', pt('dhuhr', 25), 'بعد أذكار المساء (الظهر)', 'dhuhr'),
+          excel('h_excel_dhuhr', '📊 إكسيل بعد القراءة (20 د)', pt('dhuhr', 50), 'بعد القراءة مباشرة', 'dhuhr', [20, 25, 30, 40], 10),
+          read('h_read_asr', pt('asr', 10), 'بعد صلاة العصر', 'asr'),
+          excel('h_excel_asr', '📊 إكسيل بعد القراءة (20 د)', pt('asr', 35), 'بعد القراءة مباشرة', 'asr', [20, 25, 30, 40], 10),
+          excel('h_excel_maghrib', '📊 إكسيل (30 د) بعد المغرب', pt('maghrib', 10), 'بعد صلاة المغرب', 'maghrib', [30, 35, 45, 60], 10)
+        );
+        if (isThu) list.push(workout(pt('isha', 15), 'بعد صلاة العشاء', 'isha'));
+        list.push(study(isThu ? pt('isha', 90) : pt('isha', 15), isThu ? 'بعد التمرين (بعد العشاء)' : 'بعد صلاة العشاء'));
+      }
+
+      list.push(H('h_prep', { title: '🎒 تجهيز شنطة الغد وأدوات المذاكرة + إغلاق اليوم', time: clock(22, 15), anchor: 'قبل النوم', location: 'بجانب باب الغرفة', temptation: '🌙 راحة البال ونوم عميق', category: 'clash', steps: [3, 5, 5], stepInc: 2, twoMin: 'وضع الكتاب وزجاجة الماء والمفاتيح في الشنطة' }));
+
+      const built = list.map(item => {
+        const p = existingHabits.find(h => h.id === item.id) || {};
+        return {
+          ...item,
+          steps: p.customSteps || item.steps,
+          stepInc: p.customStepInc || item.stepInc,
+          unit: p.customUnit || item.unit,
+          title: p.customTitle || item.title,
+          time: p.customTime || item.time,
+          anchor: p.customAnchor || item.anchor,
+          location: p.customLocation || item.location,
+          temptation: p.customTemptation || item.temptation,
+          twoMin: p.customTwoMin || item.twoMin,
+          scaleLevel: p.scaleLevel || 1,
+          streak: p.streak || 1,
+          customTitle: p.customTitle || null, customTime: p.customTime || null, customAnchor: p.customAnchor || null,
+          customLocation: p.customLocation || null, customTemptation: p.customTemptation || null, customTwoMin: p.customTwoMin || null,
+          customSteps: p.customSteps || null, customStepInc: p.customStepInc || null, customUnit: p.customUnit || null
+        };
+      });
+      return built.concat(existingHabits.filter(h => h.isCustom));
+    }
+
+    const DEFAULT_SCORECARD = [
+      { id: 'sc1', text: 'الالتزام بالصلوات الخمس في وقتها مع تسريح الشعر والوضوء قبلها', rating: '+' },
+      { id: 'sc2', text: 'تكديس الإكسيل مباشرة بعد القراءة (20 د) وبعد المذاكرة (10 د)', rating: '+' },
+      { id: 'sc3', text: 'الجلوس على القهوة مع مراجعة Anki بدل تصفح الموبايل فقط', rating: '+' },
+      { id: 'sc4', text: 'فتح السوشيال ميديا فور الاستيقاظ قبل الماء والفجر', rating: '-' },
+      { id: 'sc5', text: 'تجهيز شنطة الجامعة وملابس الكيك بوكسينج ليلاً قبل النوم', rating: '+' }
+    ];
+
+    const DEFAULT_ENV_CHECKLIST = [
+      { id: 'env1', text: '💧 زجاجة ماء ممتلئة بجانب السرير قبل النوم (إشارة قبل الفجر)', done: false },
+      { id: 'env2', text: '🎒 شنطة الجامعة وملابس الكيك بوكسينج جاهزة عند الباب', done: false },
+      { id: 'env3', text: '📖 كتاب القراءة على المكتب في مكان واضح (بعد الفجر والظهر والعصر)', done: false },
+      { id: 'env4', text: '🧠 تطبيق Anki على الشاشة الرئيسية لمراجعته مع القهوة', done: false },
+      { id: 'env5', text: '📵 الموبايل في وضع عدم الإزعاج أثناء بومودورو الـ50 دقيقة', done: false },
+      { id: 'env6', text: '📊 ملف الإكسيل مفتوح ومثبت لبدء الجلسة بنقرة واحدة', done: false }
+    ];
+
+    const DEFAULT_OBSTACLE_PLANS = [
+      { id: 'ob1', ifText: 'رجعت من الجامعة تعبان', thenText: 'أقعد على القهوة 15 دقيقة مع Anki ثم أروح الكيك بوكسينج، ولو الطاقة واطية أعمل نسخة الدقيقتين' },
+      { id: 'ob2', ifText: 'كان اليوم إجازة (الأربعاء أو الخميس أو الجمعة)', thenText: 'أطبّق سلسلة القراءة + الإكسيل بعد كل صلاة، وأبدأ بصفحة واحدة لو الحماس واطي' },
+      { id: 'ob3', ifText: 'اتشتت أثناء بومودورو الـ50 دقيقة', thenText: 'أبعد الموبايل لغرفة تانية وأبدأ بدقيقتين فقط، والراحة 10 دقائق ما تتلغيش' }
+    ];
+
+    const WEEKLY_SEASONS = [
+      { id: 's1', name: '⚔️ أسبوع غنائم كلاش والانضباط', buffDesc: '✨ +25% جواهر 💎 على كل عادة + مضاعفة ظهور مكافآت Clash of Clans 🏰!', gemMult: 1.25, xpMult: 1.0, focusTag: 'clash' },
+      { id: 's2', name: '📊 أسبوع ماراثون الإكسيل والعمل العميق', buffDesc: '✨ +30% XP على جلسات الإكسيل والمذاكرة + سرعة ترقية الصناديق الفضية!', gemMult: 1.0, xpMult: 1.30, focusTag: 'study' },
+      { id: 's3', name: '♟️ أسبوع أسطورة الشطرنج والقراءة', buffDesc: '✨ +25% شحن إضافي لعداد الحظ + مكافآت شطرنج وتحليل حصرية!', gemMult: 1.1, xpMult: 1.15, focusTag: 'chess' },
+      { id: 's4', name: '🔥 أسبوع القوة البدنية والاستشفاء', buffDesc: '✨ +25% جواهر 💎 على التمرين والماء + تعزيز طاقة التعافي!', gemMult: 1.25, xpMult: 1.1, focusTag: 'fitness' }
+    ];
+
+    const FEATURE_UNLOCK_TREE = [
+      { level: 1, icon: '🕌', title: 'توقيت الزرقا، دمياط + مود الجامعة/الإجازة + التكديس', desc: 'حساب مواقيت الزرقا فلكياً، التفرقة بين أيام الجامعة (مذاكرة أخف بعد التمرين) وأيام الإجازة، والصناديق البرونزية.' },
+      { level: 2, icon: '🍪', title: 'جَرّة الكوكيز (Can\'t Hurt Me) + بونص +10% جواهر', desc: 'سجل انتصاراتك الصعبة لرفع طاقتك وقت التعب + زيادة 10% دائمة على الجواهر.' },
+      { level: 3, icon: '🕵️', title: 'المهام السرية المتجددة (Secret Quests)', desc: '3 تحديات يومية متجددة تلقائياً بمكافافآت XP وجواهر.' },
+      { level: 4, icon: '⚡', title: 'ساعة الحظ الذهبية (Golden Hour 2x)', desc: 'مضاعف 2x XP و 2x جواهر لمدة 60 دقيقة متواصلة!' },
+      { level: 5, icon: '🐉', title: 'معركة الزعيم الأسبوعي (Weekly Boss Battle)', desc: 'وحش أسبوعي بـ 500 HP يتلقى ضرراً مع كل عادة وعند هزيمته يفتح صندوقاً أسطورياً!' },
+      { level: 6, icon: '🎰', title: 'تعزيز الحظ الدائم (+15% فرصة للصناديق الذهبية)', desc: 'يرفع نسبة الفوز الأساسية في ماكينة المكافآت المتباينة بمقدار +15%.' },
+      { level: 8, icon: '🎨', title: 'ثيمات الألوان الملكية (4 واجهات حصرية)', desc: 'فتح مبدّل الثيمات: الزمردي، الذهبي الملكي، النيون، والبركاني.' },
+      { level: 10, icon: '👑', title: 'لقب أسطورة الانضباط + مضاعف 1.5x XP دائم', desc: 'أعلى رتبة في النظام مع مضاعف خبرة دائم 1.5x على كل إنجازاتك.' }
+    ];
+
+    const REWARD_POOL = [
+      { id: 'rw1', title: '⚔️ هجمة حرب وتجميع موارد 10 دقايق في Clash of Clans', tier: 'bronze', category: 'Clash of Clans' },
+      { id: 'rw2', title: '🏰 جلسة تطوير TH15 وهجمتين (20 دقيقة) في Clash of Clans', tier: 'silver', category: 'Clash of Clans' },
+      { id: 'rw3', title: '👑 جلسة ملكية 25 دقيقة ودردشة الكلان في Clash of Clans', tier: 'gold', category: 'Clash of Clans' },
+      { id: 'rw4', title: '♟️ جيم شطرنج Blitz 3+2 أو حل 5 ألغاز تكتيكية', tier: 'bronze', category: 'شطرنج' },
+      { id: 'rw5', title: '♟️ جيم شطرنج Rapid 10+0 وتحليل الأخطاء بهدوء', tier: 'silver', category: 'شطرنج' },
+      { id: 'rw6', title: '☕ فنجان قهوة مظبوط برشة كاكاو خام + تمرة', tier: 'bronze', category: 'قهوة وسناك' },
+      { id: 'rw7', title: '🥣 آيس كوفي بروتين أو شوفان دافئ بالكاكاو والقرفة محسوب السعرات', tier: 'silver', category: 'قهوة وسناك' },
+      { id: 'rw8', title: '✏️ شخبطة واسكتش سريع بالقلم الرصاص لمدة 10 دقايق', tier: 'bronze', category: 'استرخاء وإبداع' },
+      { id: 'rw9', title: '😂 مقطع كوميدي نظيف يفصل دماغك بالضحك', tier: 'bronze', category: 'استرخاء وإبداع' },
+      { id: 'rw10', title: '📺 حلقة أنمي نظيفة كختام مميز لليوم', tier: 'silver', category: 'استرخاء وإبداع' },
+      { id: 'rw11', title: '🚿 حمام دافئ وروتين عناية واستشفاء متكامل', tier: 'gold', category: 'استرخاء وإبداع' },
+      { id: 'rw12', title: '📱 إيداع 50 جنيه في حصالة التابلت', tier: 'gold', category: 'حصالة التابلت' },
+      { id: 'rw13', title: '💎 بطاقة مضاعفة الجواهر القادمة 2x', tier: 'legendary', category: 'بطاقة جوكر', joker: 'double_gems' },
+      { id: 'rw14', title: '🛡️ درع حماية السلسلة المجاني (Streak Shield)', tier: 'legendary', category: 'بطاقة جوكر', joker: 'shield' }
+    ];
+
+    const GEM_SHOP_ITEMS = [
+      { id: 'sh1', title: '🏰 جلسة Clash of Clans كاملة (25 دقيقة)', cost: 80, cat: 'Clash of Clans' },
+      { id: 'sh2', title: '💎 بطاقة مضاعفة الجواهر القادمة 2x', cost: 95, cat: 'بطاقة جوكر', joker: 'double_gems' },
+      { id: 'sh3', title: '📱 إيداع 50 جنيه في حصالة التابلت', cost: 120, cat: 'حصالة التابلت' },
+      { id: 'sh4', title: '📺 حلقة أنمي نظيفة + سناك بروتين محسوب', cost: 135, cat: 'ترفيه' },
+      { id: 'sh5', title: '🛡️ درع حماية السلسلة (Streak Shield)', cost: 180, cat: 'حماية', joker: 'shield' }
+    ];
+
+    const SECRET_QUEST_TEMPLATES = [
+      { id: 'sq_3habits', title: '🎯 انطلاقة البطل: أنجز 3 عادات مكدّسة اليوم', metric: 'habits', target: 3, xp: 80, gems: 35 },
+      { id: 'sq_timer', title: '⏱️ سيد التركيز: استخدم مؤقت التركيز أو زر ➕ تدرج لعادة واحدة', metric: 'timerOrScale', target: 1, xp: 70, gems: 30 },
+      { id: 'sq_prayers', title: '🕌 سلسلة الزرقا: أتمم 3 صلوات مع طقس ما قبل الصلاة', metric: 'prayers', target: 3, xp: 90, gems: 40 },
+      { id: 'sq_slots', title: '🎰 صائد الغنائم: افتح صندوقين في ماكينة المكافآت اليوم', metric: 'slots', target: 2, xp: 65, gems: 30 },
+      { id: 'sq_frog', title: '🐸 التهام الضفدع: أنجز عادة "ضفدع اليوم" بنجاح', metric: 'frog', target: 1, xp: 100, gems: 45 }
+    ];
+
+    const WEEKLY_BOSSES = ['🐉 تنين التسويف والتشتت', '👾 وحش السهر والكسل', '🦂 عقرب الأعذار المؤجلة'];
+
+    // ================= 5. الحالة العامة (State) =================
+    let state = {
+      xp: 0,
+      level: 1,
+      gems: 50,
+      identityVotes: 3,
+      streakDays: 1,
+      soundEnabled: true,
+      theme: 'emerald',
+      seasonOffset: 0,
+      seasonXp: 0,
+      goldenHourUntil: 0,
+      goldenHourUsedDate: '',
+      luckMeter: 20,
+      doubleNextGems: false,
+      streakShields: 1,
+      selectedDay: new Date().getDay(),
+      dayModeOverride: 'auto', // 'auto' | 'university' | 'rest'
+      prayerOffsets: { fajr: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 },
+      habits: [],
+      completedTodayIds: [],
+      todayDateKey: '',
+      prayers: { fajr: false, dhuhr: false, asr: false, maghrib: false, isha: false },
+      dailyMetrics: { habits: 0, timerOrScale: 0, prayers: 0, slots: 0, frog: 0 },
+      secretQuests: [],
+      boss: { name: WEEKLY_BOSSES[0], maxHp: 500, currentHp: 500, defeatedCount: 0 },
+      vault: [],
+      monthlyLog: {},
+      identityEvidence: [
+        { id: 'ev1', text: 'التزمت بتكديس القراءة والإكسيل على فترات بمواقيت الزرقا', date: 'بداية النظام' },
+        { id: 'ev2', text: 'راعت خطتي الفارق بين أيام الجامعة وأيام الإجازة', date: 'بداية النظام' }
+      ],
+      scorecard: JSON.parse(JSON.stringify(DEFAULT_SCORECARD)),
+      envChecklist: JSON.parse(JSON.stringify(DEFAULT_ENV_CHECKLIST)),
+      obstaclePlans: JSON.parse(JSON.stringify(DEFAULT_OBSTACLE_PLANS)),
+      cookies: [
+        'رجعت من يوم جامعة طويل الساعة 5:30 م ورغم التعب التزمت بالتمرين ثم القراءة والإكسيل ومذاكرة خفيفة!',
+        'التزمت بقاعدة الدقيقتين في يوم مرهق وما كسرتش السلسلة.'
+      ],
+      notifiedLevels: [1],
+      simulatedMissedYesterday: false,
+      tasks: [],
+      taskCat: 'all',
+      contract: { commit: '', partner: '', penalty: '' },
+      review: null,
+      schemaV: 0
+    };
+
+    let editingHabitId = null;
+    let focusTimer = { habitId: null, secondsLeft: 1200, defaultSeconds: 1200, interval: null, running: false };
+    let slotContext = { spinning: false, timers: [], wonReward: null, boxTier: 'bronze' };
+
+    // ================= 6. أدوات التاريخ والمواسم =================
+    function getDateKeyOffset(daysOffset = 0) {
+      const d = new Date();
+      d.setDate(d.getDate() + daysOffset);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function getTodayKey() { return getDateKeyOffset(0); }
+
+    function getCurrentWeekIndex() {
+      const now = new Date();
+      const startOfYear = new Date(now.getFullYear(), 0, 1);
+      return Math.floor(Math.floor((now - startOfYear) / (24 * 60 * 60 * 1000)) / 7);
+    }
+
+    function getActiveSeason() {
+      const idx = (getCurrentWeekIndex() + (state.seasonOffset || 0)) % WEEKLY_SEASONS.length;
+      return { ...WEEKLY_SEASONS[idx], number: idx + 1 };
+    }
+
+    function isGoldenHourActive() { return (state.goldenHourUntil || 0) > Date.now(); }
+
+    function getHabitTarget(habit) {
+      const idx = (habit.scaleLevel || 1) - 1;
+      if (idx < habit.steps.length) return habit.steps[idx];
+      const last = habit.steps[habit.steps.length - 1];
+      return last + (idx - (habit.steps.length - 1)) * (habit.stepInc || 5);
+    }
+
+    function getHabitBoxTier(habit) {
+      const lvl = habit.scaleLevel || 1;
+      if (lvl >= 7) return BOX_TIERS.legendary;
+      if (lvl >= 5) return BOX_TIERS.gold;
+      if (lvl >= 3) return BOX_TIERS.silver;
+      return BOX_TIERS.bronze;
+    }
+
+    function xpNeededForLevel(lvl) { return lvl * 120; }
+
+    function saveState() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) state = { ...state, ...JSON.parse(raw) };
+      } catch (e) {}
+
+      const today = getTodayKey();
+      if (state.todayDateKey !== today) {
+        state.todayDateKey = today;
+        state.selectedDay = new Date().getDay();
+        state.dayModeOverride = 'auto';
+        state.completedTodayIds = [];
+        state.prayers = { fajr: false, dhuhr: false, asr: false, maghrib: false, isha: false };
+        state.dailyMetrics = { habits: 0, timerOrScale: 0, prayers: 0, slots: 0, frog: 0 };
+        generateSecretQuests();
+      }
+      if (!Array.isArray(state.secretQuests) || state.secretQuests.length === 0) generateSecretQuests();
+      if (state.schemaV !== 8) {
+        state.schemaV = 8;
+        [['scorecard', DEFAULT_SCORECARD], ['envChecklist', DEFAULT_ENV_CHECKLIST], ['obstaclePlans', DEFAULT_OBSTACLE_PLANS]].forEach(([k, defs]) => {
+          if (!Array.isArray(state[k])) state[k] = [];
+          defs.forEach(d => {
+            const i = state[k].findIndex(x => x.id === d.id);
+            if (i > -1) state[k][i] = { ...state[k][i], ...(d.text !== undefined ? { text: d.text } : { ifText: d.ifText, thenText: d.thenText }) };
+            else state[k].push(JSON.parse(JSON.stringify(d)));
+          });
+        });
+      }
+      if (!Array.isArray(state.tasks)) state.tasks = [];
+      if (typeof state.selectedDay !== 'number') state.selectedDay = new Date().getDay();
+      state.habits = buildHabitsForCurrentMode(state.habits || []);
+      document.body.setAttribute('data-theme', state.theme || 'emerald');
+    }
+
+    // ================= 7. الإشعارات والاحتفالات ونظام الـ XP =================
+    function showToast(msg, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const div = document.createElement('div');
+      const themes = {
+        info: 'bg-slate-900/95 border-amber-500/50 text-amber-200',
+        success: 'bg-emerald-950/95 border-emerald-400/60 text-emerald-200',
+        gem: 'bg-sky-950/95 border-sky-400/60 text-sky-200',
+        warn: 'bg-rose-950/95 border-rose-500/60 text-rose-200'
+      };
+      div.className = `pointer-events-auto px-4 py-2.5 rounded-2xl border shadow-2xl text-xs sm:text-sm font-black animate-fade-up ${themes[type] || themes.info}`;
+      div.textContent = msg;
+      container.appendChild(div);
+      setTimeout(() => {
+        div.style.opacity = '0';
+        div.style.transition = 'opacity 0.25s ease';
+        setTimeout(() => div.remove(), 260);
+      }, 3000);
+    }
+
+    function triggerConfetti() {
+      const canvas = document.getElementById('confettiCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const colors = ['#10B981', '#F59E0B', '#FBBF24', '#38BDF8', '#A855F7', '#F43F5E'];
+      const parts = Array.from({ length: 80 }, () => ({
+        x: Math.random() * canvas.width,
+        y: -20 - Math.random() * 100,
+        size: 5 + Math.random() * 6,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vy: 3 + Math.random() * 4,
+        vx: (Math.random() - 0.5) * 3.5,
+        rot: Math.random() * 360
+      }));
+      let f = 0;
+      function loop() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        parts.forEach(p => {
+          p.y += p.vy; p.x += p.vx; p.rot += 5;
+          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate((p.rot * Math.PI) / 180);
+          ctx.fillStyle = p.color; ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+          ctx.restore();
+        });
+        f++;
+        if (f < 105) requestAnimationFrame(loop);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      requestAnimationFrame(loop);
+    }
+
+    function addXPAndGems(baseXp, baseGems) {
+      const season = getActiveSeason();
+      let xpMult = season.xpMult || 1;
+      let gemMult = season.gemMult || 1;
+      if (state.level >= 2) gemMult += 0.10;
+      if (state.level >= 10) xpMult *= 1.5;
+      if (isGoldenHourActive()) { xpMult *= 2; gemMult *= 2; }
+      if (state.doubleNextGems && baseGems > 0) { gemMult *= 2; state.doubleNextGems = false; }
+
+      const finalXp = Math.round(baseXp * xpMult);
+      const finalGems = Math.round(baseGems * gemMult);
+
+      state.xp += finalXp;
+      state.seasonXp = Math.min(300, (state.seasonXp || 0) + finalXp);
+      state.gems += finalGems;
+      checkLevelUp();
+      return { finalXp, finalGems };
+    }
+
+    function checkLevelUp() {
+      let leveledUp = false;
+      while (state.xp >= xpNeededForLevel(state.level)) {
+        state.xp -= xpNeededForLevel(state.level);
+        state.level += 1;
+        leveledUp = true;
+      }
+      if (leveledUp) {
+        SoundEngine.playLevelUp();
+        triggerConfetti();
+        const unlockedNow = FEATURE_UNLOCK_TREE.find(u => u.level === state.level);
+        if (!state.notifiedLevels.includes(state.level)) {
+          state.notifiedLevels.push(state.level);
+          document.getElementById('unlockModalLevelTag').textContent = `LEVEL ${state.level} UNLOCKED!`;
+          document.getElementById('unlockModalTitle').textContent = `وصلت إلى المستوى ${state.level}!`;
+          document.getElementById('unlockModalDesc').textContent = unlockedNow
+            ? `🎉 تم فتح ميزة جديدة تلقائياً: ${unlockedNow.icon} ${unlockedNow.title} — ${unlockedNow.desc}`
+            : '🔥 استمر في التقدم! كل مستوى يقربك من الفتح القادم في شجرة التطور.';
+          document.getElementById('levelUnlockModal').classList.remove('hidden');
+        }
+      }
+    }
+
+    function closeLevelUnlockModal() { SoundEngine.playClick(); document.getElementById('levelUnlockModal').classList.add('hidden'); }
+    function earnDemoXpBoost() {
+      const res = addXPAndGems(60, 15);
+      SoundEngine.playGem(2); saveState(); renderAll();
+      showToast(`⚡ حصلت على +${res.finalXp} XP و +${res.finalGems} 💎!`, 'success');
+    }
+
+    // ================= 8. قاعدة "لا تفوّت مرتين ⚠️" =================
+    function checkNeverMissTwiceStatus() {
+      const yesterdayKey = getDateKeyOffset(-1);
+      const todayKey = getTodayKey();
+      const yEntry = state.monthlyLog[yesterdayKey];
+      const tEntry = state.monthlyLog[todayKey];
+      const hasAnyHistory = Object.keys(state.monthlyLog).length > 0;
+      const yesterdayMissed = state.simulatedMissedYesterday || (
+        hasAnyHistory && (!yEntry || ((yEntry.completedIds?.length || 0) === 0 && !yEntry.shielded))
+      );
+      const todayCovered = (tEntry && ((tEntry.completedIds?.length || 0) > 0 || tEntry.shielded)) || state.completedTodayIds.length > 0;
+
+      const banner = document.getElementById('neverMissTwiceBanner');
+      if (yesterdayMissed && !todayCovered) {
+        banner.classList.remove('hidden');
+        document.getElementById('bannerShieldsCount').textContent = state.streakShields || 0;
+      } else {
+        banner.classList.add('hidden');
+      }
+    }
+
+    function simulateMissedYesterdayDemo() {
+      SoundEngine.playClick();
+      state.monthlyLog[getDateKeyOffset(-1)] = { completedIds: [], shielded: false };
+      state.simulatedMissedYesterday = true;
+      saveState(); renderAll();
+      showToast('⚠️ تم تفعيل محاكاة فوات يوم أمس — راجع خطة التعويض الفورية في الأعلى!', 'warn');
+    }
+
+    function executeNeverMissRecoveryTwoMin() {
+      const nextUncompleted = state.habits.find(h => !state.completedTodayIds.includes(h.id)) || state.habits[0];
+      state.simulatedMissedYesterday = false;
+      addXPAndGems(25, 25);
+      if (nextUncompleted) completeHabit(nextUncompleted.id, true);
+      showToast('🔥 تم إنقاذ السلسلة بخطة التعويض (قاعدة لا تفوّت مرتين)! +25 💎', 'success');
+    }
+
+    // ================= 9. تكديس الصلوات والقراءة + ضبط دقائق الزرقا + التبديل بين الجامعة والإجازة =================
+    function changeScheduleDay(dayNum) {
+      SoundEngine.playClick();
+      state.selectedDay = Number(dayNum);
+      state.habits = buildHabitsForCurrentMode(state.habits);
+      saveState();
+      renderAll();
+    }
+
+    function setDayModeOverride(mode) {
+      SoundEngine.playClick();
+      state.dayModeOverride = mode;
+      state.habits = buildHabitsForCurrentMode(state.habits);
+      saveState();
+      renderAll();
+      const label = mode === 'auto'
+        ? '🔄 وضع تلقائي حسب اليوم المختار'
+        : mode === 'university'
+        ? '🏛️ مود أيام الجامعة (مذاكرة أخف بعد التمرين)'
+        : '🌿 مود أيام الإجازة والراحة';
+      showToast(`تم التبديل إلى ${label}`, 'info');
+    }
+
+    function openPrayerOffsetModal() {
+      SoundEngine.playClick();
+      const prayerTimes = computeZarqaPrayerTimes(new Date(), state.prayerOffsets);
+      document.getElementById('prayerOffsetInputsList').innerHTML = PRAYERS_META.map(p => `
+        <div class="flex items-center justify-between bg-slate-950/80 border border-slate-800 rounded-xl px-3 py-2">
+          <div>
+            <span class="font-black text-white">${p.label}</span>
+            <span class="text-amber-300 font-mono mr-2">(${prayerTimes.formatted[p.key]})</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-slate-400">دقائق:</span>
+            <input id="offset_${p.key}" type="number" min="-30" max="30" value="${state.prayerOffsets[p.key] || 0}"
+              class="w-16 bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-center text-white font-mono" />
+          </div>
+        </div>
+      `).join('');
+      document.getElementById('prayerOffsetModal').classList.remove('hidden');
+    }
+
+    function closePrayerOffsetModal() { SoundEngine.playClick(); document.getElementById('prayerOffsetModal').classList.add('hidden'); }
+
+    function savePrayerOffsets() {
+      SoundEngine.playClick();
+      PRAYERS_META.forEach(p => {
+        const val = Number(document.getElementById(`offset_${p.key}`).value) || 0;
+        state.prayerOffsets[p.key] = Math.max(-30, Math.min(30, val));
+      });
+      state.habits = buildHabitsForCurrentMode(state.habits); saveState(); closePrayerOffsetModal(); renderAll();
+      showToast('✅ تم تحديث فروق الدقائق لمواقيت الزرقا، دمياط!', 'success');
+    }
+
+    function resetPrayerOffsets() {
+      SoundEngine.playClick();
+      state.prayerOffsets = { fajr: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 };
+      state.habits = buildHabitsForCurrentMode(state.habits); saveState(); closePrayerOffsetModal(); renderAll();
+      showToast('🔄 تمت إعادة المواقيت الفلكية القياسية للزرقا، دمياط', 'info');
+    }
+
+    function togglePrayer(prayerKey) {
+      state.prayers[prayerKey] = !state.prayers[prayerKey];
+      const count = Object.values(state.prayers).filter(Boolean).length;
+      state.dailyMetrics.prayers = count;
+      const pMeta = PRAYERS_META.find(p => p.key === prayerKey);
+
+      if (state.prayers[prayerKey]) {
+        state.identityVotes += 1;
+        recordIdentityEvidence(`أتممت صلاة ${pMeta.label} بتوقيت الزرقا مع طقس الوضوء وتسريح الشعر`);
+        const res = addXPAndGems(15, 8);
+        SoundEngine.playGem(count);
+        illuminateStackedHabitsForAnchor(pMeta.anchorMatch);
+        if (count === 5) {
+          addXPAndGems(30, 30);
+          triggerConfetti();
+          showToast('🕌 أتممت الصلوات الخمس كاملة (+30 💎 بونص التكديس الذهبي)!', 'success');
+        } else {
+          showToast(`🕌 صلاة ${pMeta.label} (+${res.finalXp} XP و +${res.finalGems} 💎) — العادات المكدّسة بعدها مضاءة!`, 'gem');
+        }
+      } else {
+        SoundEngine.playClick();
+      }
+      saveState(); renderAll();
+    }
+
+    function illuminateStackedHabitsForAnchor(anchorPrefix) {
+      setTimeout(() => {
+        document.querySelectorAll(`[data-anchor*="${anchorPrefix}"]`).forEach(card => {
+          card.classList.remove('stack-illuminated');
+          void card.offsetWidth;
+          card.classList.add('stack-illuminated');
+        });
+      }, 80);
+    }
+
+    function scrollToHabitCard(habitId) {
+      SoundEngine.playClick();
+      const el = document.getElementById(`habit-card-${habitId}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.remove('stack-illuminated');
+        void el.offsetWidth;
+        el.classList.add('stack-illuminated');
+      }
+    }
+
+    function adjustHabitScale(habitId, delta) {
+      const h = state.habits.find(item => item.id === habitId);
+      if (!h) return;
+      const oldTier = getHabitBoxTier(h).key;
+      h.scaleLevel = Math.max(1, (h.scaleLevel || 1) + delta);
+      const newTier = getHabitBoxTier(h);
+
+      if (delta > 0) {
+        state.dailyMetrics.timerOrScale = (state.dailyMetrics.timerOrScale || 0) + 1;
+        if (newTier.key !== oldTier) {
+          SoundEngine.playWin(newTier.key);
+          triggerConfetti();
+          showToast(`🎊 ترقية صندوق العادة! ارتقت إلى ${newTier.label} (+${newTier.gems} 💎)!`, 'success');
+        } else {
+          SoundEngine.playGem(2);
+          showToast(`📈 زاد التدرج إلى ${getHabitTarget(h)} ${h.unit} (المستوى ${h.scaleLevel})`, 'info');
+        }
+      } else {
+        SoundEngine.playClick();
+      }
+      saveState(); renderAll();
+    }
+
+    function toggleHabitFrog(habitId) {
+      SoundEngine.playClick();
+      state.habits.forEach(h => { h.isFrog = (h.id === habitId) ? !h.isFrog : false; });
+      saveState(); renderHabitsList();
+      const activeFrog = state.habits.find(h => h.isFrog);
+      if (activeFrog) showToast(`🐸 "${activeFrog.title}" أصبحت ضفدع اليوم (2x XP)!`, 'success');
+    }
+
+    function completeHabit(habitId, isTwoMin = false) {
+      const h = state.habits.find(item => item.id === habitId);
+      if (!h) return;
+
+      const today = getTodayKey();
+      const alreadyDone = state.completedTodayIds.includes(habitId);
+      if (alreadyDone) {
+        SoundEngine.playClick();
+        state.completedTodayIds = state.completedTodayIds.filter(id => id !== habitId);
+        if (state.monthlyLog[today]) state.monthlyLog[today].completedIds = state.completedTodayIds;
+        saveState(); renderAll();
+        showToast('↩️ تم إلغاء تسجيل العادة اليوم', 'info');
+        return;
+      }
+
+      state.completedTodayIds.push(habitId);
+      state.simulatedMissedYesterday = false;
+      h.streak = (h.streak || 0) + 1;
+      state.identityVotes += 1;
+      state.dailyMetrics.habits = state.completedTodayIds.length;
+      if (h.isFrog) state.dailyMetrics.frog = 1;
+
+      const modeTag = isTwoMin ? 'نسخة الدقيقتين ⚡' : `${getHabitTarget(h)} ${h.unit}`;
+      recordIdentityEvidence(`أنجزت "${h.title}" (${modeTag}) في موعدها (${h.time})`);
+
+      if (!state.monthlyLog[today]) state.monthlyLog[today] = { completedIds: [], shielded: false };
+      state.monthlyLog[today].completedIds = [...state.completedTodayIds];
+
+      const boxTier = getHabitBoxTier(h);
+      let baseXp = isTwoMin ? 20 : 35;
+      let baseGems = isTwoMin ? Math.max(8, Math.round(boxTier.gems * 0.5)) : boxTier.gems;
+      if (h.isFrog) baseXp *= 2;
+
+      const res = addXPAndGems(baseXp, baseGems);
+      SoundEngine.playGem(state.completedTodayIds.length);
+      if (state.level >= 5) dealBossDamage(h.isFrog ? 130 : (isTwoMin ? 50 : 80));
+      maybeTriggerRandomGoldenHour();
+      saveState(); renderAll();
+
+      const label = isTwoMin ? `⚡ دقيقتين: ${h.title}` : `✅ ${h.title}`;
+      openSlotMachineModal(label, boxTier.key, false);
+      showToast(`🎉 +1 صوت لهويتك • +${res.finalXp} XP و +${res.finalGems} 💎!`, 'success');
+    }
+
+    // ================= 10. إضافة وتعديل العادات =================
+    function openHabitEditorModal(habitId = null) {
+      SoundEngine.playClick();
+      editingHabitId = habitId;
+      const modalTitle = document.getElementById('habitEditorModalTitle');
+
+      if (habitId) {
+        const h = state.habits.find(item => item.id === habitId);
+        if (!h) return;
+        modalTitle.textContent = '✏️ تعديل توقيت وتكديس العادة';
+        document.getElementById('habitTitleInput').value = h.title;
+        document.getElementById('habitTimeInput').value = h.time || '6:10 م';
+        const anchorSel = document.getElementById('habitAnchorSelect');
+        if (h.anchor && ![...anchorSel.options].some(o => o.value === h.anchor)) anchorSel.add(new Option(h.anchor, h.anchor));
+        anchorSel.value = h.anchor;
+        document.getElementById('habitLocationInput').value = h.location || 'المكتب / اللابتوب';
+        document.getElementById('habitTemptationInput').value = h.temptation || '🍬 اللبانة المفضلة';
+        document.getElementById('habitBaseTargetInput').value = h.steps[0] || 15;
+        document.getElementById('habitUnitInput').value = h.unit || 'دقيقة';
+        document.getElementById('habitStepInput').value = h.stepInc || 5;
+        document.getElementById('habitTwoMinInput').value = h.twoMin || '';
+      } else {
+        modalTitle.textContent = '➕ إضافة عادة ذرية مكدّسة';
+        document.getElementById('habitTitleInput').value = '';
+        document.getElementById('habitTimeInput').value = '6:35 م';
+        document.getElementById('habitAnchorSelect').value = 'بعد القراءة مباشرة';
+        document.getElementById('habitLocationInput').value = 'المكتب / اللابتوب';
+        document.getElementById('habitTemptationInput').value = '🍬 اللبانة المفضلة';
+        document.getElementById('habitBaseTargetInput').value = 15;
+        document.getElementById('habitUnitInput').value = 'دقيقة';
+        document.getElementById('habitStepInput').value = 5;
+        document.getElementById('habitTwoMinInput').value = '';
+      }
+      document.getElementById('habitEditorModal').classList.remove('hidden');
+    }
+
+    function closeHabitEditorModal() { SoundEngine.playClick(); editingHabitId = null; document.getElementById('habitEditorModal').classList.add('hidden'); }
+
+    function saveHabitFromEditor() {
+      const title = document.getElementById('habitTitleInput').value.trim();
+      if (!title) { showToast('⚠️ اكتب اسم العادة أولاً', 'warn'); return; }
+      const time = document.getElementById('habitTimeInput').value.trim() || '6:35 م';
+      const anchor = document.getElementById('habitAnchorSelect').value;
+      const location = document.getElementById('habitLocationInput').value.trim() || 'المكتب الهادئ';
+      const temptation = document.getElementById('habitTemptationInput').value.trim() || '🍬 اللبانة المفضلة';
+      const baseTarget = Math.max(1, Number(document.getElementById('habitBaseTargetInput').value) || 15);
+      const unit = document.getElementById('habitUnitInput').value.trim() || 'دقيقة';
+      const stepInc = Math.max(1, Number(document.getElementById('habitStepInput').value) || 5);
+      const twoMin = document.getElementById('habitTwoMinInput').value.trim() || `دقيقتان فقط من ${title}`;
+
+      if (editingHabitId) {
+        const idx = state.habits.findIndex(item => item.id === editingHabitId);
+        if (idx !== -1) {
+          state.habits[idx] = {
+            ...state.habits[idx],
+            title, customTitle: title,
+            time, customTime: time,
+            anchor, customAnchor: anchor,
+            location, customLocation: location,
+            temptation, customTemptation: temptation,
+            steps: [baseTarget, baseTarget + stepInc, baseTarget + stepInc * 2, baseTarget + stepInc * 3],
+            stepInc, unit, twoMin, customTwoMin: twoMin,
+            customSteps: [baseTarget, baseTarget + stepInc, baseTarget + stepInc * 2, baseTarget + stepInc * 3], customStepInc: stepInc, customUnit: unit
+          };
+        }
+        showToast('✅ تم تحديث توقيت وتكديس العادة!', 'success');
+      } else {
+        state.habits.push({
+          id: 'h_' + Date.now(),
+          title, customTitle: title,
+          time, customTime: time,
+          anchor, customAnchor: anchor,
+          location, customLocation: location,
+          temptation, customTemptation: temptation,
+          category: 'study',
+          steps: [baseTarget, baseTarget + stepInc, baseTarget + stepInc * 2, baseTarget + stepInc * 3],
+          isCustom: true, stepInc, unit, scaleLevel: 1, twoMin, customTwoMin: twoMin, isFrog: false, streak: 1
+        });
+        showToast('🎯 تمت إضافة العادة المكدّسة الجديدة!', 'success');
+      }
+      SoundEngine.playGem(2); saveState(); closeHabitEditorModal(); renderAll();
+    }
+
+    // ================= 11. مؤقت التركيز وتجميع المغريات =================
+    function openFocusTimerModal(habitId) {
+      SoundEngine.playClick();
+      const h = state.habits.find(item => item.id === habitId);
+      if (!h) return;
+      stopFocusTimer();
+      focusTimer.habitId = habitId;
+      const target = getHabitTarget(h);
+      const mins = h.unit.includes('دقيق') ? target : 15;
+      focusTimer.defaultSeconds = mins * 60;
+      focusTimer.secondsLeft = mins * 60;
+      focusTimer.running = false;
+
+      const box = getHabitBoxTier(h);
+      document.getElementById('timerModalChestTag').textContent = `${box.label} (+${box.gems} 💎)`;
+      document.getElementById('timerModalHabitName').textContent = h.title;
+      document.getElementById('timerModalTargetInfo').textContent = `⏰ ${h.time} (${h.anchor}) • الهدف: ${target} ${h.unit}${h.restMin ? ` • راحة ${h.restMin} د` : ''}`;
+      document.getElementById('timerModalTemptationText').textContent = `${h.temptation || '🍬 جهّزت اللبانة المفضلة'} — جاهز للانطلاق!`;
+      document.getElementById('temptationRitualCheckbox').checked = false;
+      document.getElementById('focusTimerToggleBtn').textContent = '▶️ بدء المؤقت';
+      updateFocusTimerClock();
+      document.getElementById('focusTimerModal').classList.remove('hidden');
+    }
+
+    function closeFocusTimerModal() { SoundEngine.playClick(); stopFocusTimer(); document.getElementById('focusTimerModal').classList.add('hidden'); }
+    function stopFocusTimer() { if (focusTimer.interval) { clearInterval(focusTimer.interval); focusTimer.interval = null; } focusTimer.running = false; }
+    function updateFocusTimerClock() {
+      const m = String(Math.floor(focusTimer.secondsLeft / 60)).padStart(2, '0');
+      const s = String(focusTimer.secondsLeft % 60).padStart(2, '0');
+      document.getElementById('focusTimerClock').textContent = `${m}:${s}`;
+    }
+
+    function toggleFocusTimerRun() {
+      SoundEngine.playClick();
+      if (!document.getElementById('temptationRitualCheckbox').checked) {
+        document.getElementById('temptationRitualCheckbox').checked = true;
+        showToast('✨ تم تفعيل طقس تجميع المغريات قبل العد التنازلي!', 'info');
+      }
+      if (focusTimer.running) {
+        stopFocusTimer();
+        document.getElementById('focusTimerToggleBtn').textContent = '▶️ استئناف';
+      } else {
+        focusTimer.running = true;
+        document.getElementById('focusTimerToggleBtn').textContent = '⏸️ إيقاف مؤقت';
+        focusTimer.interval = setInterval(() => {
+          if (focusTimer.secondsLeft > 0) { focusTimer.secondsLeft--; updateFocusTimerClock(); }
+          else { stopFocusTimer(); finishFocusTimerHabit(); }
+        }, 1000);
+      }
+    }
+
+    function setFocusTimerMinutes(mins) { SoundEngine.playClick(); stopFocusTimer(); focusTimer.secondsLeft = mins * 60; document.getElementById('focusTimerToggleBtn').textContent = '▶️ بدء المؤقت'; updateFocusTimerClock(); }
+    function startRestTimer() { const h = state.habits.find(x => x.id === focusTimer.habitId); setFocusTimerMinutes((h && h.restMin) || 10); showToast('☕ وقت الراحة — ابتعد عن الشاشة', 'info'); }
+    function resetFocusTimerClock() { SoundEngine.playClick(); stopFocusTimer(); focusTimer.secondsLeft = focusTimer.defaultSeconds; document.getElementById('focusTimerToggleBtn').textContent = '▶️ بدء المؤقت'; updateFocusTimerClock(); }
+    function finishFocusTimerHabit() {
+      const id = focusTimer.habitId;
+      state.dailyMetrics.timerOrScale = (state.dailyMetrics.timerOrScale || 0) + 1;
+      closeFocusTimerModal();
+      if (id) completeHabit(id, false);
+    }
+
+    // ================= 12. أدوات قوانين الكتاب العملية =================
+    function recordIdentityEvidence(text) {
+      const timeLabel = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+      state.identityEvidence.unshift({ id: 'ev_' + Date.now() + Math.random().toString(16).slice(2, 6), text, date: `اليوم ${timeLabel}` });
+      if (state.identityEvidence.length > 25) state.identityEvidence.pop();
+    }
+
+    function addManualIdentityEvidence() {
+      const inp = document.getElementById('manualIdentityEvidenceInput');
+      const val = inp.value.trim();
+      if (!val) return;
+      state.identityVotes += 1; recordIdentityEvidence(val); inp.value = '';
+      addXPAndGems(15, 10); SoundEngine.playGem(2); saveState(); renderAll();
+      showToast('🏆 +1 صوت لهويتك: منضبط، قارئ، ومتميز!', 'success');
+    }
+
+    function setScorecardRating(id, rating) {
+      SoundEngine.playClick();
+      const item = state.scorecard.find(s => s.id === id);
+      if (item) { item.rating = rating; saveState(); renderLawsTab(); }
+    }
+
+    function addScorecardItem() {
+      const inp = document.getElementById('newScorecardInput');
+      const text = inp.value.trim();
+      if (!text) return;
+      state.scorecard.unshift({ id: 'sc_' + Date.now(), text, rating: '+' });
+      inp.value = ''; SoundEngine.playClick(); saveState(); renderLawsTab();
+      showToast('📋 تمت إضافة السلوك إلى بطاقة مسح العادات!', 'info');
+    }
+
+    function toggleEnvChecklistItem(id) {
+      const item = state.envChecklist.find(e => e.id === id);
+      if (!item) return;
+      item.done = !item.done;
+      if (item.done) { addXPAndGems(15, 10); SoundEngine.playGem(2); showToast('🏠 تم تجهيز البيئة بنجاح (+10 💎)!', 'success'); }
+      else SoundEngine.playClick();
+      saveState(); renderAll();
+    }
+
+    function addObstaclePlan() {
+      const ifEl = document.getElementById('obstacleIfInput');
+      const thenEl = document.getElementById('obstacleThenInput');
+      const ifText = ifEl.value.trim(), thenText = thenEl.value.trim();
+      if (!ifText || !thenText) { showToast('⚠️ اكتب العقبة والحل الفوري معاً', 'warn'); return; }
+      state.obstaclePlans.unshift({ id: 'ob_' + Date.now(), ifText, thenText });
+      ifEl.value = ''; thenEl.value = '';
+      addXPAndGems(20, 10); SoundEngine.playGem(2); saveState(); renderAll();
+      showToast('🛡️ تم حفظ خطة الطوارئ (إذا حدث X سأفعل Y)!', 'success');
+    }
+
+    // ================= 13. ماكينة الصناديق المتباينة =================
+    function pickRewardByTier(tierKey) {
+      const season = getActiveSeason();
+      let pool = REWARD_POOL.filter(r => {
+        if (tierKey === 'bronze') return r.tier === 'bronze';
+        if (tierKey === 'silver') return r.tier === 'silver' || r.tier === 'bronze';
+        if (tierKey === 'gold') return r.tier === 'gold' || r.tier === 'silver';
+        return true;
+      });
+      if (pool.length === 0) pool = REWARD_POOL;
+      if (season.focusTag === 'clash' && Math.random() < 0.45) {
+        const clashPool = REWARD_POOL.filter(r => r.category === 'Clash of Clans');
+        if (clashPool.length) return clashPool[Math.floor(Math.random() * clashPool.length)];
+      }
+      if (season.focusTag === 'chess' && Math.random() < 0.45) {
+        const chessPool = REWARD_POOL.filter(r => r.category === 'شطرنج');
+        if (chessPool.length) return chessPool[Math.floor(Math.random() * chessPool.length)];
+      }
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function openSlotMachineModal(sourceLabel, tierKey = 'bronze', forceWin = false) {
+      slotContext.timers.forEach(t => clearTimeout(t));
+      slotContext.timers = []; slotContext.spinning = true; slotContext.boxTier = tierKey;
+      state.dailyMetrics.slots = (state.dailyMetrics.slots || 0) + 1;
+
+      const box = BOX_TIERS[tierKey] || BOX_TIERS.bronze;
+      document.getElementById('slotBoxTierBadge').textContent = box.label;
+      document.getElementById('slotSourceBadge').textContent = sourceLabel;
+      document.getElementById('slotCaptionText').textContent = '🎲 البكرات تدور... هل ستحصل على غنيمة أم شحنة حظ؟';
+      document.getElementById('slotNearMissPanel').classList.add('hidden');
+      document.getElementById('slotWinPanel').classList.add('hidden');
+
+      const reels = [0, 1, 2].map(i => document.getElementById(`slotReel${i}`));
+      reels.forEach(r => { r.classList.remove('reel-locked'); r.classList.add('reel-spinning'); });
+      document.getElementById('slotMachineModal').classList.remove('hidden');
+
+      const baseWinChance = state.level >= 6 ? 85 : 70;
+      const isWin = forceWin || (state.luckMeter >= 100) || (Math.random() * 100 < baseWinChance);
+      const wonReward = isWin ? pickRewardByTier(tierKey) : null;
+      slotContext.wonReward = wonReward;
+
+      const finalIcons = isWin ? [box.icon, box.icon, box.icon] : ['💎', '💎', '⚡'];
+      const symbols = ['🥉', '🥈', '🥇', '💠', '🏰', '♟️', '☕', '💎'];
+      let step = 0;
+
+      const spinInterval = setInterval(() => {
+        if (!slotContext.spinning) { clearInterval(spinInterval); return; }
+        step++;
+        reels.forEach((el, idx) => {
+          if (!el.classList.contains('reel-locked')) el.textContent = symbols[(step + idx * 2) % symbols.length];
+        });
+        SoundEngine.playTick();
+      }, 65);
+
+      [420, 820, 1220].forEach((delay, idx) => {
+        const t = setTimeout(() => {
+          reels[idx].classList.remove('reel-spinning');
+          reels[idx].classList.add('reel-locked');
+          reels[idx].textContent = finalIcons[idx];
+          SoundEngine.playReelStop(idx);
+
+          if (idx === 2) {
+            slotContext.spinning = false;
+            clearInterval(spinInterval);
+            setTimeout(() => {
+              if (isWin && wonReward) {
+                state.luckMeter = 20;
+                document.getElementById('slotCaptionText').textContent = '🎊 مبروك! تطابقت البكرات وفزت بمكافأة!';
+                document.getElementById('slotWonCategoryTag').textContent = `${box.label} • ${wonReward.category}`;
+                document.getElementById('slotWonTitleText').textContent = wonReward.title;
+                document.getElementById('slotWinPanel').classList.remove('hidden');
+                SoundEngine.playWin(tierKey);
+                triggerConfetti();
+              } else {
+                const luckGain = getActiveSeason().focusTag === 'chess' ? 25 : 20;
+                state.luckMeter = Math.min(100, (state.luckMeter || 20) + luckGain);
+                state.gems += 5;
+                document.getElementById('slotCaptionText').textContent = `⚡ تعزيز الانضباط! +5 💎 ترضية + شحن الحظ +${luckGain}%`;
+                document.getElementById('slotNewLuckText').textContent = state.luckMeter >= 100
+                  ? '🔮 عداد الحظ اكتمل 100% — الجائزة القادمة مضمونة!'
+                  : `🔮 عداد الحظ الآن: ${state.luckMeter}%`;
+                document.getElementById('slotNearMissPanel').classList.remove('hidden');
+                SoundEngine.playNearMiss();
+              }
+              saveState(); renderAll();
+            }, 220);
+          }
+        }, delay);
+        slotContext.timers.push(t);
+      });
+    }
+
+    function applyJokerEffect(reward) {
+      if (!reward) return;
+      if (reward.joker === 'double_gems') { state.doubleNextGems = true; showToast('💎 تم تفعيل مضاعف الجواهر 2x للعادة القادمة!', 'gem'); }
+      else if (reward.joker === 'shield') { state.streakShields = (state.streakShields || 0) + 1; showToast('🛡️ تمت إضافة درع حماية السلسلة إلى رصيدك!', 'success'); }
+    }
+
+    function claimSlotRewardNow() {
+      if (slotContext.wonReward) {
+        applyJokerEffect(slotContext.wonReward);
+        SoundEngine.playGem(3);
+        showToast(`🎁 استمتع بمكافأتك: ${slotContext.wonReward.title}`, 'success');
+      }
+      saveState(); renderAll(); closeSlotMachineModal();
+    }
+
+    function saveSlotRewardToVault() {
+      SoundEngine.playClick();
+      if (slotContext.wonReward) {
+        state.vault.unshift({
+          id: 'v_' + Date.now(), title: slotContext.wonReward.title,
+          category: slotContext.wonReward.category, tier: slotContext.wonReward.tier, joker: slotContext.wonReward.joker || null
+        });
+        saveState(); renderAll();
+        showToast('📌 تم حفظ المكافأة في محفظة المكافآت المؤجلة!', 'info');
+      }
+      closeSlotMachineModal();
+    }
+
+    function closeSlotMachineModal() { slotContext.timers.forEach(t => clearTimeout(t)); slotContext.timers = []; slotContext.spinning = false; document.getElementById('slotMachineModal').classList.add('hidden'); }
+
+    function redeemVaultItem(id) {
+      const idx = state.vault.findIndex(v => v.id === id);
+      if (idx === -1) return;
+      const item = state.vault[idx];
+      state.vault.splice(idx, 1); applyJokerEffect(item);
+      SoundEngine.playWin('silver'); saveState(); renderAll();
+      showToast(`✅ تم استهلاك: ${item.title}`, 'success');
+    }
+
+    function buyGemShopItem(itemId) {
+      const item = GEM_SHOP_ITEMS.find(s => s.id === itemId);
+      if (!item) return;
+      if (state.gems < item.cost) { SoundEngine.playClick(); showToast(`💎 تحتاج إلى ${item.cost - state.gems} جوهرة إضافية!`, 'warn'); return; }
+      state.gems -= item.cost;
+      if (item.joker === 'shield') state.streakShields = (state.streakShields || 0) + 1;
+      else if (item.joker === 'double_gems') state.doubleNextGems = true;
+      else state.vault.unshift({ id: 'v_' + Date.now(), title: item.title, category: item.cat, tier: 'gold' });
+      SoundEngine.playWin('gold'); triggerConfetti(); saveState(); renderAll();
+      showToast(`🎉 تم شراء "${item.title}" بنجاح!`, 'success');
+    }
+
+    // ================= 14. المواسم، ساعة الحظ، الزعيم، الكوكيز، التصدير =================
+    function cyclePreviewSeason() { SoundEngine.playClick(); state.seasonOffset = ((state.seasonOffset || 0) + 1) % WEEKLY_SEASONS.length; saveState(); renderAll(); showToast(`🔄 معاينة: ${getActiveSeason().name}`, 'info'); }
+
+    function activateGoldenHourManual() {
+      if (state.level < 4) { SoundEngine.playClick(); showToast('🔒 ساعة الحظ الذهبية تفتح تلقائياً عند المستوى 4!', 'warn'); return; }
+      const today = getTodayKey();
+      if (state.goldenHourUsedDate === today && !isGoldenHourActive()) { showToast('⏳ تم استخدام التفعيل اليدوي اليوم — ستعود غداً أو تظهر عشوائياً!', 'info'); return; }
+      state.goldenHourUsedDate = today; state.goldenHourUntil = Date.now() + 60 * 60 * 1000;
+      SoundEngine.playGoldenHour(); triggerConfetti(); saveState(); renderAll();
+      showToast('⚡ تم تفعيل ساعة الحظ الذهبية (2x XP & 💎) لمدة 60 دقيقة!', 'success');
+    }
+
+    function maybeTriggerRandomGoldenHour() {
+      if (state.level < 4 || isGoldenHourActive()) return;
+      if (Math.random() < 0.25) {
+        state.goldenHourUntil = Date.now() + 60 * 60 * 1000;
+        SoundEngine.playGoldenHour(); triggerConfetti();
+        showToast('⚡ مفاجأة! تفعّلت ساعة الحظ الذهبية (2x XP & 💎) لمدة 60 دقيقة!', 'success');
+      }
+    }
+
+    function updateGoldenHourTick() {
+      const banner = document.getElementById('goldenHourActiveBanner');
+      if (!isGoldenHourActive()) { banner.classList.add('hidden'); return; }
+      banner.classList.remove('hidden');
+      const remSec = Math.max(0, Math.floor((state.goldenHourUntil - Date.now()) / 1000));
+      document.getElementById('goldenHourCountdown').textContent = `${String(Math.floor(remSec / 60)).padStart(2, '0')}:${String(remSec % 60).padStart(2, '0')}`;
+    }
+
+    function generateSecretQuests() {
+      state.secretQuests = [...SECRET_QUEST_TEMPLATES].sort(() => Math.random() - 0.5).slice(0, 3).map(q => ({ ...q, claimed: false }));
+    }
+
+    function rerollSecretQuests() {
+      if (state.level < 3) { SoundEngine.playClick(); showToast('🔒 المهام السرية المتجددة تفتح عند المستوى 3!', 'warn'); return; }
+      SoundEngine.playClick(); generateSecretQuests(); saveState(); renderSecretQuests();
+      showToast('🔄 تم توليد 3 مهام سرية جديدة!', 'info');
+    }
+
+    function claimSecretQuest(qId) {
+      if (state.level < 3) return;
+      const q = state.secretQuests.find(item => item.id === qId);
+      if (!q || q.claimed || (state.dailyMetrics[q.metric] || 0) < q.target) return;
+      q.claimed = true;
+      const res = addXPAndGems(q.xp, q.gems);
+      SoundEngine.playWin('gold'); triggerConfetti(); saveState(); renderAll();
+      showToast(`🎁 استلمت جائزة المهمة السرية (+${res.finalXp} XP و +${res.finalGems} 💎)!`, 'success');
+    }
+
+    function dealBossDamage(baseDmg) {
+      if (state.level < 5) return;
+      const dmg = baseDmg * (isGoldenHourActive() ? 2 : 1);
+      state.boss.currentHp = Math.max(0, state.boss.currentHp - dmg);
+      SoundEngine.playBossHit();
+      if (state.boss.currentHp === 0) {
+        state.boss.defeatedCount = (state.boss.defeatedCount || 0) + 1;
+        state.boss.name = WEEKLY_BOSSES[state.boss.defeatedCount % WEEKLY_BOSSES.length];
+        state.boss.currentHp = state.boss.maxHp;
+        addXPAndGems(200, 100); SoundEngine.playBossDefeat(); triggerConfetti();
+        showToast('🏆 هزمت الزعيم الأسبوعي! +200 XP + 100 💎 + صندوق أسطوري مجاني!', 'success');
+        setTimeout(() => openSlotMachineModal('🏆 غنيمة هزيمة الزعيم الأسبوعي!', 'legendary', true), 500);
+      }
+    }
+
+    function pullCookieFromJar() {
+      if (state.level < 2) { SoundEngine.playClick(); showToast('🔒 جَرّة الكوكيز تفتح تلقائياً عند المستوى 2!', 'warn'); return; }
+      if (!state.cookies.length) return;
+      const pick = state.cookies[Math.floor(Math.random() * state.cookies.length)];
+      const banner = document.getElementById('pulledCookieBanner');
+      banner.textContent = `🔥 تذكّر أنك فعلتها من قبل: "${pick}"`;
+      banner.classList.remove('hidden');
+      addXPAndGems(10, 10); SoundEngine.playGem(2); saveState(); renderAll();
+    }
+
+    function addCookieNote() {
+      const inp = document.getElementById('newCookieInput');
+      const val = inp.value.trim();
+      if (!val) return;
+      state.cookies.unshift(val); inp.value = '';
+      addXPAndGems(15, 10); SoundEngine.playGem(2); saveState(); renderAll();
+      showToast('🍪 تمت إضافة انتصارك إلى جَرّة الكوكيز!', 'success');
+    }
+
+    function setAppTheme(themeName) {
+      if (state.level < 8 && themeName !== 'emerald') { SoundEngine.playClick(); showToast('🔒 الثيمات الملكية الإضافية تفتح عند المستوى 8!', 'warn'); return; }
+      SoundEngine.playClick(); state.theme = themeName; document.body.setAttribute('data-theme', themeName); saveState();
+      showToast('🎨 تم تغيير مظهر التطبيق بنجاح!', 'success');
+    }
+
+    function toggleMonthlyDay(dayKey) {
+      SoundEngine.playClick();
+      if (!state.monthlyLog[dayKey]) state.monthlyLog[dayKey] = { completedIds: [], shielded: false };
+      const entry = state.monthlyLog[dayKey];
+      if ((entry.completedIds?.length || 0) > 0) entry.completedIds = [];
+      else {
+        entry.completedIds = ['manual_check'];
+        if (dayKey === getDateKeyOffset(-1)) state.simulatedMissedYesterday = false;
+      }
+      saveState(); renderAll();
+    }
+
+    function useStreakShield() {
+      if ((state.streakShields || 0) <= 0) { SoundEngine.playClick(); showToast('⚠️ لا تملك دروع حماية! اشترِ درعاً من متجر الجواهر 💎', 'warn'); return; }
+      const today = getTodayKey(), yesterday = getDateKeyOffset(-1);
+      if (!state.monthlyLog[today]) state.monthlyLog[today] = { completedIds: [], shielded: false };
+      state.monthlyLog[today].shielded = true;
+      if (state.simulatedMissedYesterday) {
+        if (!state.monthlyLog[yesterday]) state.monthlyLog[yesterday] = { completedIds: [], shielded: false };
+        state.monthlyLog[yesterday].shielded = true;
+        state.simulatedMissedYesterday = false;
+      }
+      state.streakShields -= 1; SoundEngine.playWin('silver'); saveState(); renderAll();
+      showToast('🛡️ تم تفعيل درع حماية السلسلة بنجاح!', 'success');
+    }
+
+    function exportTiinyHostHTML() {
+      SoundEngine.playGem(3);
+      const blob = new Blob([CLEAN_SOURCE_HTML], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'index.html';
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      showToast('⬇️ تم تحميل index.html — ارفعه مباشرة على Tiiny Host!', 'success');
+    }
+
+    function exportBackupJSON() {
+      SoundEngine.playClick();
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = `atomic-habits-zarqa-${getTodayKey()}.json`;
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      showToast('📤 تم تصدير ملف النسخة الاحتياطية (JSON)', 'success');
+    }
+
+    function importBackupJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        try {
+          const parsed = JSON.parse(ev.target.result);
+          if (parsed && typeof parsed === 'object') {
+            state = { ...state, ...parsed };
+            state.habits = buildHabitsForCurrentMode(state.habits || []);
+            saveState(); renderAll(); SoundEngine.playWin('gold');
+            showToast('📥 تم استيراد بياناتك بنجاح!', 'success');
+          }
+        } catch (err) { showToast('❌ ملف غير صالح', 'warn'); }
+      };
+      reader.readAsText(file);
+    }
+
+    function toggleSound() { state.soundEnabled = !state.soundEnabled; updateSoundButton(); saveState(); if (state.soundEnabled) SoundEngine.playGem(1); showToast(state.soundEnabled ? '🔊 الصوت مفعّل' : '🔇 الصوت مكتوم'); }
+    function updateSoundButton() { document.getElementById('soundIcon').textContent = state.soundEnabled ? '🔊' : '🔇'; }
+
+    // ================= 15. دوال العرض الشامل (Renderers) =================
+    function renderDayModeBannerAndHeader() {
+      const day = state.selectedDay;
+      const info = DAY_SCHEDULES[day] || DAY_SCHEDULES[4];
+      const uniMode = isUniversityModeActive();
+
+      document.getElementById('dayModeIcon').textContent = uniMode ? '🏛️' : '🌿';
+      const overrideNote = state.dayModeOverride === 'auto' ? ' (تلقائي)' : ' (يدوي)';
+      document.getElementById('headerScheduleText').textContent = `${info.dayName}: ${info.scheduleNote}${overrideNote}`;
+      document.getElementById('todayHabitsProgressPill').textContent = `${state.completedTodayIds.length} / ${state.habits.length}`;
+
+      const btnUni = document.getElementById('btnModeUniversity');
+      const btnRest = document.getElementById('btnModeRest');
+      btnUni.className = `px-2 py-0.5 rounded-md text-[10px] font-black border transition ${
+        uniMode ? 'bg-amber-400 text-slate-950 border-amber-300' : 'bg-slate-800/80 text-slate-300 border-slate-700'
+      }`;
+      btnRest.className = `px-2 py-0.5 rounded-md text-[10px] font-black border transition ${
+        !uniMode ? 'bg-emerald-400 text-slate-950 border-emerald-300' : 'bg-slate-800/80 text-slate-300 border-slate-700'
+      }`;
+
+      // أزرار الأيام من السبت إلى الجمعة مع تمييز اليوم الحالي
+      const actualToday = new Date().getDay();
+      const order = [6, 0, 1, 2, 3, 4, 5];
+      document.getElementById('scheduleDayPills').innerHTML = order.map(d => {
+        const active = d === day;
+        const isActual = d === actualToday;
+        return `
+          <button onclick="changeScheduleDay(${d})"
+            class="px-2 py-0.5 rounded-md text-[10px] sm:text-[11px] font-extrabold whitespace-nowrap border transition ${
+              active
+                ? 'bg-emerald-400 text-slate-950 border-emerald-300'
+                : isActual
+                ? 'bg-amber-500/20 text-amber-200 border-amber-400/50'
+                : 'bg-slate-800/90 text-slate-300 border-slate-700'
+            }">
+            ${DAY_SCHEDULES[d].dayName}${isActual ? ' •' : ''}
+          </button>
+        `;
+      }).join('');
+
+      // بانر التوضيح داخل تبويب اليوم
+      const modeBadge = document.getElementById('bannerModeBadge');
+      const studyRuleTag = document.getElementById('bannerStudyRuleTag');
+      const modeDesc = document.getElementById('bannerModeDescription');
+      document.getElementById('bannerModeDayName').textContent = `اليوم المختار: ${info.dayName}`;
+
+      if (uniMode) {
+        modeBadge.className = 'px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/50 text-amber-200 text-xs font-black';
+        modeBadge.textContent = '🏛️ مود أيام الجامعة (مذاكرة أخف وبعد التمرين)';
+        studyRuleTag.textContent = '📚 مذاكرة بومودورو (50 د + راحة 10 د) بعد التمرين + إكسيل 10 د';
+        modeDesc.textContent = 'الفجر ← أذكار الصباح ← الجامعة ← القهوة ← كيك بوكسينج ← مذاكرة بومودورو ← إكسيل 10 دقائق بعد المذاكرة.';
+      } else {
+        modeBadge.className = 'px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/50 text-emerald-300 text-xs font-black';
+        modeBadge.textContent = '🌿 مود أيام الإجازة والراحة';
+        studyRuleTag.textContent = '📖 قراءة 10 صفحات + إكسيل بعد كل صلاة';
+        modeDesc.textContent = 'بعد الفجر والظهر والعصر: قراءة 10 صفحات ثم إكسيل 20 د. بعد المغرب إكسيل 30 د. بعد العشاء: الخميس تمرين ثم مذاكرة، والأربعاء والجمعة مذاكرة 50 د + راحة 10 د.';
+      }
+    }
+
+    function renderHeader() {
+      const prayerData = computeZarqaPrayerTimes(new Date(), state.prayerOffsets);
+      document.getElementById('nextPrayerCountdownHeader').textContent = getNextPrayerInfo(prayerData);
+
+      document.getElementById('headerGemsCount').textContent = state.gems || 0;
+      document.getElementById('headerLevelBadge').textContent = `المستوى ${state.level}`;
+
+      const ranks = [
+        'منضبط، قارئ، ومتميز 🌱',
+        'مهندس التكديس الذري ⚡',
+        'سيد التركيز والعمل العميق 🛠️',
+        'محارب الاستمرارية 🔥',
+        'قائد المواسم الذهبية 👑',
+        'أسطورة الـ 1% 💎'
+      ];
+      document.getElementById('headerRankTitle').textContent = ranks[Math.min(state.level - 1, ranks.length - 1)];
+
+      const needed = xpNeededForLevel(state.level);
+      const pct = Math.min(100, Math.round((state.xp / needed) * 100));
+      document.getElementById('headerXpText').textContent = `${state.xp} / ${needed} XP`;
+      document.getElementById('headerXpBar').style.width = `${Math.max(4, pct)}%`;
+
+      document.getElementById('headerComboBadge').textContent = `كومبو اليوم: ${state.completedTodayIds.length} 🔥`;
+      document.getElementById('kpiIdentityVotes').textContent = state.identityVotes || 0;
+      document.getElementById('kpiStreakDays').textContent = `${state.streakDays || 1} يوم`;
+      document.getElementById('kpiLuckMeter').textContent = `${state.luckMeter || 20}%`;
+
+      renderDayModeBannerAndHeader();
+    }
+
+    function renderHabitStackingSection() {
+      const prayerData = computeZarqaPrayerTimes(new Date(), state.prayerOffsets);
+      const count = Object.values(state.prayers).filter(Boolean).length;
+      document.getElementById('prayerCountBadge').textContent = `${count}/5 صلوات`;
+
+      document.getElementById('prayerPillsGrid').innerHTML = PRAYERS_META.map(p => {
+        const done = Boolean(state.prayers[p.key]);
+        const timeText = prayerData.formatted[p.key];
+        return `
+          <button onclick="togglePrayer('${p.key}')"
+            class="py-2 px-1 rounded-xl border text-[11px] sm:text-xs font-black transition active:scale-95 flex flex-col items-center gap-0.5 ${
+              done ? 'bg-emerald-500/20 border-emerald-400/65 text-emerald-300 shadow-md shadow-emerald-500/10' : 'bg-slate-800/80 border-slate-700 text-slate-300'
+            }">
+            <span>${done ? '✅' : '🕌'}</span>
+            <span>${p.label}</span>
+            <span class="text-[9px] text-amber-300 font-mono">${timeText}</span>
+          </button>
+        `;
+      }).join('');
+
+      const chainNodes = PRAYERS_META.map(p => ({ key: p.key, badge: `🕌 ${p.label} (${prayerData.formatted[p.key]})`, prayerKey: p.key }));
+      if (isUniversityModeActive()) chainNodes.splice(4, 0, { key: 'return', badge: '🏠 بعد العودة من الجامعة', prayerKey: null });
+
+      document.getElementById('habitStackingTimeline').innerHTML = chainNodes.map(node => {
+        const hs = state.habits.filter(h => h.after === node.key);
+        const prayerDone = node.prayerKey ? Boolean(state.prayers[node.prayerKey]) : false;
+        const habitDone = hs.length > 0 && hs.every(h => state.completedTodayIds.includes(h.id));
+        const text = hs.length ? hs.map(h => `${escapeHtml(h.title)} (${escapeHtml(h.time)})`).join(' ⬅️ ') : 'صلاة وراحة — لا عادات مكدّسة بعدها';
+        return `
+          <div ${hs.length ? `onclick="scrollToHabitCard('${hs[0].id}')"` : ''}
+            class="${hs.length ? 'cursor-pointer ' : ''}flex flex-wrap items-center justify-between gap-1.5 px-2.5 py-2 rounded-lg border transition ${
+              habitDone
+                ? 'bg-emerald-950/35 border-emerald-500/50 text-emerald-200'
+                : prayerDone
+                ? 'bg-amber-500/15 border-amber-400/55 text-amber-100'
+                : 'bg-slate-900/90 border-slate-800 hover:border-slate-700 text-slate-300'
+            }">
+            <span class="font-black text-amber-300 shrink-0">${node.badge}:</span>
+            <span class="font-bold flex-1 min-w-[200px]">${text}</span>
+            <span class="text-[10px] font-black shrink-0 ${habitDone ? 'text-emerald-300' : 'text-slate-400'}">
+              ${habitDone ? '✅ مكتمل' : (hs.length ? 'انتقال ↙️' : '')}
+            </span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderHabitsList() {
+      const uniMode = isUniversityModeActive();
+      document.getElementById('habitsSectionTitle').textContent = uniMode
+        ? `⏰ عادات يوم الجامعة المكدّسة (${state.habits.length} خطوة — فجر ثم جامعة ثم قهوة وتمرين ومذاكرة)`
+        : `⏰ عادات يوم الإجازة المكدّسة (${state.habits.length} خطوة — قراءة وإكسيل بعد كل صلاة)`;
+
+      document.getElementById('habitsListContainer').innerHTML = state.habits.map(h => {
+        const done = state.completedTodayIds.includes(h.id);
+        const target = getHabitTarget(h);
+        const box = getHabitBoxTier(h);
+        const timeStr = h.time || '6:10 م';
+        const anchorStr = h.anchor || 'بعد المغرب';
+        const locStr = h.location || 'المكتب الهادئ';
+        const temptStr = h.temptation || '🍬 اللبانة المفضلة';
+
+        return `
+          <div id="habit-card-${h.id}" data-anchor="${escapeHtml(anchorStr)}"
+            class="border ${done ? 'border-emerald-500/65 bg-emerald-950/15' : h.isFrog ? 'border-lime-500/50 bg-slate-900/95' : 'border-slate-800 bg-slate-900/95'} rounded-2xl p-3.5 sm:p-4 space-y-2.5 shadow-md transition">
+
+            <div class="flex items-start justify-between gap-2">
+              <div class="space-y-1.5 min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="px-2.5 py-0.5 rounded-lg bg-amber-500/20 border border-amber-400/45 text-amber-200 text-[11px] font-black">
+                    ⏰ ${escapeHtml(timeStr)} • ${escapeHtml(anchorStr)}
+                  </span>
+                  <span class="px-2 py-0.5 rounded-lg border ${box.badge} text-[10px] sm:text-[11px] font-black">
+                    ${box.label} (+${box.gems} 💎)
+                  </span>
+                  ${h.isFrog ? '<span class="px-2 py-0.5 rounded-lg bg-lime-500/20 border border-lime-400/45 text-lime-300 text-[10px] font-black">🐸 ضفدع اليوم (2x XP)</span>' : ''}
+                </div>
+                <h3 class="text-sm sm:text-base font-black text-white leading-snug">${escapeHtml(h.title)}</h3>
+              </div>
+
+              <div class="flex items-center gap-1 shrink-0">
+                <button onclick="openHabitEditorModal('${h.id}')" title="تعديل الوقت والتكديس"
+                  class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs">✏️</button>
+                <button onclick="toggleHabitFrog('${h.id}')" title="تعيين كضفدع اليوم (2x XP)"
+                  class="p-1.5 rounded-lg border text-xs ${h.isFrog ? 'bg-lime-500/25 border-lime-400 text-lime-200' : 'bg-slate-800 border-slate-700 text-slate-400'}">🐸</button>
+              </div>
+            </div>
+
+            <div class="bg-slate-950/80 border border-emerald-500/25 rounded-xl px-3 py-2 text-[11px] sm:text-xs text-slate-200 leading-relaxed">
+              <span class="text-emerald-400 font-black">📍 القانون 1 (نية التنفيذ والتكديس):</span>
+              "<strong class="text-amber-200">${escapeHtml(anchorStr)}</strong>، سأقوم بـ <strong class="text-white">${escapeHtml(h.title)}</strong> في <strong class="text-sky-300">${escapeHtml(locStr)}</strong> الساعة <strong class="text-amber-300">${escapeHtml(timeStr)}</strong> لمدة <strong class="text-emerald-300">${target} ${escapeHtml(h.unit)}</strong>"
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-950/65 border border-slate-800 rounded-xl px-3 py-1.5 text-[11px]">
+              <span class="text-amber-200/95 font-bold">
+                <strong class="text-amber-400">✨ القانون 2 (المغري):</strong> ${escapeHtml(temptStr)}
+              </span>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <span class="text-slate-300 font-extrabold">تدرج ${h.scaleLevel || 1} (${target} ${escapeHtml(h.unit)}):</span>
+                <button onclick="adjustHabitScale('${h.id}', -1)" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold">➖</button>
+                <button onclick="adjustHabitScale('${h.id}', 1)" class="px-2 py-0.5 rounded bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/45 text-amber-300 font-black">➕ تدرج</button>
+              </div>
+            </div>
+
+            <div class="text-[11px] text-slate-300 px-1">
+              <strong class="text-sky-400">⚡ القانون 3 (قاعدة الدقيقتين للأيام الصعبة):</strong> ${escapeHtml(h.twoMin)}
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 pt-0.5">
+              <button onclick="openFocusTimerModal('${h.id}')"
+                class="py-2.5 px-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-300 font-extrabold text-xs transition active:scale-95">
+                ⏱️ ابدأ المؤقت
+              </button>
+              <button onclick="completeHabit('${h.id}', false)"
+                class="py-2.5 px-2 rounded-xl ${done ? 'bg-emerald-500 text-slate-950' : 'bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/45 text-emerald-300'} font-black text-xs transition active:scale-95">
+                ✅ إنجاز كامل
+              </button>
+              <button onclick="completeHabit('${h.id}', true)"
+                class="py-2.5 px-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 font-black text-xs transition active:scale-95">
+                ⚡ دقيقتين
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderSeasonBossAndQuests() {
+      const season = getActiveSeason();
+      document.getElementById('seasonBadgeTag').textContent = `الموسم الأسبوعي #${season.number}`;
+      document.getElementById('seasonTitleText').textContent = season.name;
+      document.getElementById('seasonBuffDesc').textContent = season.buffDesc;
+      const sXp = state.seasonXp || 0;
+      document.getElementById('seasonProgressLabel').textContent = `${sXp} / 300 XP`;
+      document.getElementById('seasonProgressBar').style.width = `${Math.min(100, Math.round((sXp / 300) * 100))}%`;
+
+      document.getElementById('goldenHourLockTag').textContent = state.level >= 4 ? '✅ مفتوح' : '🔒 Lv.4';
+      updateGoldenHourTick();
+
+      document.getElementById('bossNameTitle').textContent = state.boss.name;
+      document.getElementById('bossHpBadge').textContent = `${state.boss.currentHp}/${state.boss.maxHp} HP`;
+      document.getElementById('bossHpBar').style.width = `${Math.max(0, Math.round((state.boss.currentHp / state.boss.maxHp) * 100))}%`;
+      renderSecretQuests();
+    }
+
+    function renderSecretQuests() {
+      const unlocked = state.level >= 3;
+      document.getElementById('secretQuestsLockTag').textContent = unlocked ? '✅ نشط' : '🔒 Lv.3';
+      const container = document.getElementById('secretQuestsList');
+      if (!unlocked) {
+        container.innerHTML = `<div class="text-xs text-slate-400 bg-slate-950/70 rounded-xl p-2.5 text-center">🔒 تفتح المهام السرية المتجددة عند الوصول إلى <strong class="text-amber-300">المستوى 3</strong>!</div>`;
+        return;
+      }
+      container.innerHTML = state.secretQuests.map(q => {
+        const cur = Math.min(q.target, state.dailyMetrics[q.metric] || 0);
+        const ready = cur >= q.target && !q.claimed;
+        return `
+          <div class="flex items-center justify-between gap-2 bg-slate-950/80 border ${ready ? 'border-amber-400/60' : 'border-slate-800'} rounded-xl px-3 py-2 text-xs">
+            <span class="font-bold text-slate-200 truncate">${escapeHtml(q.title)} (${cur}/${q.target})</span>
+            ${
+              q.claimed
+                ? '<span class="text-emerald-300 font-black shrink-0">✅ تم</span>'
+                : ready
+                ? `<button onclick="claimSecretQuest('${q.id}')" class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-black shrink-0">استلام +${q.gems} 💎</button>`
+                : `<span class="text-sky-300 font-black shrink-0">+${q.gems} 💎</span>`
+            }
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderLawsTab() {
+      document.getElementById('lawsIdentityVotesCount').textContent = state.identityVotes || 0;
+      document.getElementById('identityEvidenceList').innerHTML = state.identityEvidence.map(ev => `
+        <div class="flex items-center justify-between gap-2 bg-slate-950/80 border border-amber-500/25 rounded-xl px-3 py-2 text-xs">
+          <span class="text-slate-100 font-bold">🗳️ ${escapeHtml(ev.text)}</span>
+          <span class="text-[10px] text-amber-300/80 font-mono shrink-0">${escapeHtml(ev.date)}</span>
+        </div>
+      `).join('');
+
+      let score = 0;
+      state.scorecard.forEach(s => { if (s.rating === '+') score += 1; else if (s.rating === '-') score -= 1; });
+      document.getElementById('scorecardSummaryBadge').textContent = `الرصيد: ${score >= 0 ? '+' + score : score}`;
+
+      document.getElementById('habitScorecardList').innerHTML = state.scorecard.map(s => `
+        <div class="flex items-center justify-between gap-2 bg-slate-950/80 border border-slate-800 rounded-xl px-3 py-2">
+          <span class="text-xs font-bold text-slate-200">${escapeHtml(s.text)}</span>
+          <div class="flex items-center gap-1 shrink-0">
+            <button onclick="setScorecardRating('${s.id}', '+')" class="w-7 h-7 rounded-lg font-black text-xs border ${s.rating === '+' ? 'bg-emerald-500 text-slate-950 border-emerald-400' : 'bg-slate-800 text-slate-400 border-slate-700'}">+</button>
+            <button onclick="setScorecardRating('${s.id}', '=')" class="w-7 h-7 rounded-lg font-black text-xs border ${s.rating === '=' ? 'bg-slate-300 text-slate-950 border-white' : 'bg-slate-800 text-slate-400 border-slate-700'}">=</button>
+            <button onclick="setScorecardRating('${s.id}', '-')" class="w-7 h-7 rounded-lg font-black text-xs border ${s.rating === '-' ? 'bg-rose-500 text-white border-rose-400' : 'bg-slate-800 text-slate-400 border-slate-700'}">-</button>
+          </div>
+        </div>
+      `).join('');
+
+      const envDone = state.envChecklist.filter(e => e.done).length;
+      document.getElementById('envChecklistCount').textContent = `${envDone}/${state.envChecklist.length}`;
+      document.getElementById('environmentChecklistContainer').innerHTML = state.envChecklist.map(e => `
+        <label class="flex items-center gap-2.5 bg-slate-950/75 border ${e.done ? 'border-sky-400/50 text-sky-200' : 'border-slate-800 text-slate-200'} rounded-xl px-3 py-2.5 cursor-pointer text-xs font-bold">
+          <input type="checkbox" ${e.done ? 'checked' : ''} onchange="toggleEnvChecklistItem('${e.id}')" class="w-4 h-4 accent-sky-400 rounded shrink-0" />
+          <span class="${e.done ? 'line-through opacity-80' : ''}">${escapeHtml(e.text)}</span>
+        </label>
+      `).join('');
+
+      document.getElementById('obstaclesListContainer').innerHTML = state.obstaclePlans.map(o => `
+        <div class="bg-slate-950/80 border border-purple-500/25 rounded-xl p-3 text-xs space-y-1">
+          <div class="text-rose-300 font-extrabold">⚠️ إذا حدث: ${escapeHtml(o.ifText)}</div>
+          <div class="text-emerald-300 font-black">✅ سأفعل: ${escapeHtml(o.thenText)}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderRewardsTab() {
+      document.getElementById('rewardsLuckLabel').textContent = `${state.luckMeter || 20}%`;
+      document.getElementById('rewardsLuckBar').style.width = `${state.luckMeter || 20}%`;
+      document.getElementById('shopGemsDisplay').textContent = state.gems || 0;
+      document.getElementById('vaultCountBadge').textContent = state.vault.length;
+      document.getElementById('vaultShieldsCount').textContent = state.streakShields || 0;
+
+      document.getElementById('gemShopContainer').innerHTML = GEM_SHOP_ITEMS.map(item => {
+        const canBuy = (state.gems || 0) >= item.cost;
+        return `
+          <div class="flex items-center justify-between gap-2 bg-slate-950/75 border ${canBuy ? 'border-sky-400/50' : 'border-slate-800'} rounded-xl p-3">
+            <div class="space-y-0.5 min-w-0">
+              <span class="text-[10px] font-extrabold text-sky-300">${escapeHtml(item.cat)}</span>
+              <div class="text-xs font-extrabold text-white leading-snug">${escapeHtml(item.title)}</div>
+            </div>
+            <button onclick="buyGemShopItem('${item.id}')"
+              class="px-3 py-2 rounded-xl font-black text-xs shrink-0 transition active:scale-95 ${
+                canBuy ? 'bg-sky-400 text-slate-950 shadow-md' : 'bg-slate-800 text-slate-400 border border-slate-700'
+              }">
+              ${item.cost} 💎
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      const vaultEl = document.getElementById('vaultListContainer');
+      if (state.vault.length === 0) {
+        vaultEl.innerHTML = '<p class="text-xs text-slate-500 text-center py-2">المحفظة فارغة — احفظ أي مكافأة تفوز بها لوقت راحتك!</p>';
+      } else {
+        vaultEl.innerHTML = state.vault.map(v => `
+          <div class="flex items-center justify-between gap-2 bg-slate-950/80 border border-slate-700 rounded-xl p-2.5">
+            <div>
+              <div class="text-[10px] text-amber-300 font-bold">${escapeHtml(v.category)}</div>
+              <div class="text-xs sm:text-sm font-extrabold text-white">${escapeHtml(v.title)}</div>
+            </div>
+            <button onclick="redeemVaultItem('${v.id}')"
+              class="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-black text-xs shrink-0 transition active:scale-95">
+              استلام الآن ✅
+            </button>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('rewardsCatalogGrid').innerHTML = REWARD_POOL.map(r => {
+        const box = BOX_TIERS[r.tier] || BOX_TIERS.bronze;
+        return `
+          <div class="bg-slate-950/65 border border-slate-800 rounded-xl p-2.5 space-y-1">
+            <div class="flex items-center gap-1.5">
+              <span class="px-2 py-0.5 rounded text-[10px] font-black border ${box.badge}">${box.label}</span>
+              <span class="text-[10px] text-slate-400 font-bold">${escapeHtml(r.category)}</span>
+            </div>
+            <div class="text-xs font-bold text-slate-100">${escapeHtml(r.title)}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderProgressionTab() {
+      document.getElementById('unlockTreeList').innerHTML = FEATURE_UNLOCK_TREE.map(u => {
+        const unlocked = state.level >= u.level;
+        return `
+          <div class="flex items-start justify-between gap-3 rounded-xl p-3 border ${
+            unlocked ? 'bg-emerald-950/25 border-emerald-500/45' : 'bg-slate-950/70 border-slate-800 opacity-75'
+          }">
+            <div class="flex items-start gap-2.5">
+              <span class="text-2xl mt-0.5">${u.icon}</span>
+              <div>
+                <div class="text-xs sm:text-sm font-black ${unlocked ? 'text-white' : 'text-slate-300'}">${escapeHtml(u.title)}</div>
+                <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">${escapeHtml(u.desc)}</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 rounded-lg text-[11px] font-black shrink-0 ${
+              unlocked ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/40' : 'bg-slate-800 text-amber-300 border border-slate-700'
+            }">
+              ${unlocked ? '✅ مفتوح' : `🔒 Lv.${u.level}`}
+            </span>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('themeUnlockStatus').textContent = state.level >= 8 ? '✅ مفتوح (Lv.8+)' : '🔒 يفتح عند المستوى 8';
+      document.getElementById('cookieLockTag').textContent = state.level >= 2 ? '✅ مفتوح' : '🔒 المستوى 2';
+      document.getElementById('cookiesListContainer').innerHTML = state.cookies.map(c => `
+        <div class="bg-slate-950/75 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold">
+          🍪 ${escapeHtml(c)}
+        </div>
+      `).join('');
+    }
+
+    function renderTrackerTab() {
+      document.getElementById('trackerShieldsCount').textContent = state.streakShields || 0;
+      const now = new Date();
+      const prefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+      const todayDay = now.getDate();
+
+      let html = '';
+      for (let d = 1; d <= 31; d++) {
+        const key = `${prefix}-${String(d).padStart(2, '0')}`;
+        const entry = state.monthlyLog[key] || {};
+        const count = entry.completedIds?.length || 0;
+        const shielded = Boolean(entry.shielded);
+        const isToday = d === todayDay;
+
+        let cls = 'bg-slate-800/75 border-slate-700 text-slate-400';
+        let icon = '·';
+        if (shielded) { cls = 'bg-sky-500/20 border-sky-400 text-sky-300'; icon = '🛡️'; }
+        else if (count >= 3) { cls = 'bg-emerald-500/25 border-emerald-400 text-emerald-300'; icon = '🔥'; }
+        else if (count >= 1) { cls = 'bg-amber-500/20 border-amber-400 text-amber-300'; icon = '✅'; }
+
+        html += `
+          <button onclick="toggleMonthlyDay('${key}')"
+            class="aspect-square rounded-xl border ${cls} ${isToday ? 'ring-2 ring-amber-400' : ''} flex flex-col items-center justify-center text-xs font-black transition active:scale-90">
+            <span>${d}</span>
+            <span class="text-xs leading-none mt-0.5">${icon}</span>
+          </button>
+        `;
+      }
+      document.getElementById('monthlyGridContainer').innerHTML = html;
+    }
+
+    function switchTab(tab) {
+      SoundEngine.playClick();
+      ['today', 'laws', 'rewards', 'progression', 'tracker'].forEach(t => {
+        const el = document.getElementById(`tab-${t}`);
+        if (t === tab) el.classList.remove('hidden');
+        else el.classList.add('hidden');
+      });
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const active = btn.getAttribute('data-tab') === tab;
+        if (active) {
+          btn.classList.remove('text-slate-400');
+          btn.classList.add('text-emerald-400', 'bg-emerald-500/10');
+        } else {
+          btn.classList.add('text-slate-400');
+          btn.classList.remove('text-emerald-400', 'bg-emerald-500/10');
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      renderAll();
+    }
+
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
+
+    function renderAll() {
+      updateSoundButton();
+      checkNeverMissTwiceStatus();
+      renderHeader();
+      renderHabitStackingSection();
+      renderHabitsList();
+      renderSeasonBossAndQuests();
+      renderLawsTab();
+      renderRewardsTab();
+      renderProgressionTab();
+      renderTrackerTab();
+      renderTasks();
+    }
+
+
+    // ================= 16. المهام والمواعيد + عقد العادات + المراجعة الأسبوعية =================
+    const TASK_CATS = { study: '🎓 الجامعة والمذاكرة', fit: '💪 التمرين والتغذية', life: '🎯 مهام وأهداف' };
+    const TASK_PRIOS = { 3: ['🔴 عالية', 'text-rose-300 border-rose-500/50'], 2: ['🟡 متوسطة', 'text-amber-300 border-amber-500/50'], 1: ['🟢 منخفضة', 'text-emerald-300 border-emerald-500/50'] };
+
+    function setTaskCat(c) { SoundEngine.playClick(); state.taskCat = c; saveState(); renderTasks(); }
+
+    function addTask() {
+      const titleEl = document.getElementById('taskTitleInput');
+      const title = titleEl.value.trim();
+      if (!title) { showToast('⚠️ اكتب اسم المهمة أولاً', 'warn'); return; }
+      state.tasks.unshift({
+        id: 't_' + Date.now(), title,
+        cat: document.getElementById('taskCatInput').value,
+        prio: Number(document.getElementById('taskPrioInput').value) || 2,
+        date: document.getElementById('taskDateInput').value || '',
+        time: document.getElementById('taskTimeInput').value || '',
+        done: false, rewarded: false
+      });
+      titleEl.value = ''; document.getElementById('taskDateInput').value = ''; document.getElementById('taskTimeInput').value = '';
+      SoundEngine.playClick(); saveState(); renderTasks();
+      showToast('🗂️ تمت إضافة المهمة', 'success');
+    }
+
+    function toggleTask(id) {
+      const t = state.tasks.find(x => x.id === id);
+      if (!t) return;
+      t.done = !t.done;
+      if (t.done && !t.rewarded) { t.rewarded = true; addXPAndGems(10, 3); SoundEngine.playGem(2); }
+      else SoundEngine.playClick();
+      saveState(); renderAll();
+    }
+
+    function postponeTask(id) {
+      const t = state.tasks.find(x => x.id === id);
+      if (!t) return;
+      t.date = getDateKeyOffset(1); SoundEngine.playClick(); saveState(); renderTasks();
+      showToast('⏭️ تم تأجيل المهمة لغد', 'info');
+    }
+
+    function moveTaskToday(id) {
+      const t = state.tasks.find(x => x.id === id);
+      if (!t) return;
+      t.date = getTodayKey(); SoundEngine.playClick(); saveState(); renderTasks();
+    }
+
+    function deleteTask(id) {
+      state.tasks = state.tasks.filter(x => x.id !== id);
+      SoundEngine.playClick(); saveState(); renderTasks();
+    }
+
+    function renderTasks() {
+      const box = document.getElementById('tasksListContainer');
+      if (!box) return;
+      const today = getTodayKey();
+      const cat = state.taskCat || 'all';
+      const eff = t => t.date || today;
+      const sorter = (a, b) => (b.prio - a.prio) || String(a.time || '99').localeCompare(String(b.time || '99'));
+
+      document.getElementById('taskCatChips').innerHTML = [['all', 'الكل'], ...Object.entries(TASK_CATS)].map(([k, l]) =>
+        `<button onclick="setTaskCat('${k}')" class="px-3 py-1.5 rounded-full whitespace-nowrap text-xs font-black border transition ${cat === k ? 'bg-sky-400 text-slate-950 border-sky-300' : 'bg-slate-800 text-slate-300 border-slate-700'}">${l}</button>`).join('');
+
+      const todayAll = state.tasks.filter(t => eff(t) === today);
+      const doneAll = todayAll.filter(t => t.done).length;
+      document.getElementById('tasksProgressPill').textContent = `${doneAll} / ${todayAll.length} اليوم`;
+      document.getElementById('tasksProgressBar').style.width = `${todayAll.length ? Math.round((doneAll / todayAll.length) * 100) : 0}%`;
+
+      const shown = state.tasks.filter(t => cat === 'all' || t.cat === cat);
+      const groups = [
+        ['📌 مهام اليوم', shown.filter(t => eff(t) === today).sort(sorter), 'today', 'لا مهام لليوم — أضف مهمة من الأعلى'],
+        ['⏳ مؤجلة / متأخرة', shown.filter(t => eff(t) < today && !t.done).sort(sorter), 'late', ''],
+        ['📆 القادمة', shown.filter(t => eff(t) > today).sort((a, b) => eff(a).localeCompare(eff(b)) || sorter(a, b)), 'next', '']
+      ];
+
+      const row = (t, kind) => {
+        const pr = TASK_PRIOS[t.prio] || TASK_PRIOS[2];
+        const dateLabel = kind === 'today' ? '' : new Date(eff(t) + 'T00:00:00').toLocaleDateString('ar-EG', { weekday: 'short', day: 'numeric', month: 'short' });
+        return `
+          <div class="flex items-center gap-2 bg-slate-950/80 border ${t.done ? 'border-emerald-500/40' : 'border-slate-800'} rounded-xl px-2.5 py-2">
+            <button onclick="toggleTask('${t.id}')" class="w-8 h-8 rounded-lg border shrink-0 font-black ${t.done ? 'bg-emerald-500 text-slate-950 border-emerald-400' : 'bg-slate-800 text-slate-500 border-slate-600'}">${t.done ? '✓' : ''}</button>
+            <div class="flex-1 min-w-0">
+              <div class="text-xs sm:text-sm font-bold ${t.done ? 'line-through text-slate-500' : 'text-white'} break-words">${escapeHtml(t.title)}</div>
+              <div class="flex flex-wrap gap-1 mt-0.5 text-[10px] font-black">
+                <span class="px-1.5 py-0.5 rounded border ${pr[1]}">${pr[0]}</span>
+                <span class="text-slate-400">${TASK_CATS[t.cat] || ''}</span>
+                ${t.time ? `<span class="text-amber-300">⏰ ${escapeHtml(t.time)}</span>` : ''}
+                ${dateLabel ? `<span class="text-sky-300">📅 ${escapeHtml(dateLabel)}</span>` : ''}
+              </div>
+            </div>
+            <div class="flex items-center gap-1 shrink-0">
+              ${kind === 'late' ? `<button onclick="moveTaskToday('${t.id}')" class="px-2 py-1.5 rounded-lg bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[11px] font-black">لليوم</button>` : (!t.done ? `<button onclick="postponeTask('${t.id}')" title="تأجيل لغد" class="px-2 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-amber-300 text-xs">⏭️</button>` : '')}
+              <button onclick="deleteTask('${t.id}')" title="حذف" class="px-2 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-rose-300 text-xs">🗑️</button>
+            </div>
+          </div>`;
+      };
+
+      box.innerHTML = groups.map(([title, arr, kind, empty]) => {
+        if (!arr.length && !empty) return '';
+        return `<div class="space-y-1.5"><div class="text-[11px] font-black text-slate-300">${title} (${arr.length})</div>${
+          arr.length ? arr.map(t => row(t, kind)).join('') : `<div class="text-xs text-slate-500 text-center py-2">${empty}</div>`}</div>`;
+      }).join('');
+    }
+
+    function saveContractField(key, val) { state.contract = state.contract || {}; state.contract[key] = val; saveState(); }
+
+    function saveWeeklyReview() {
+      const win = document.getElementById('reviewWin').value.trim();
+      const miss = document.getElementById('reviewMiss').value.trim();
+      const tweak = document.getElementById('reviewTweak').value.trim();
+      if (!win && !miss && !tweak) { showToast('⚠️ اكتب نقطة واحدة على الأقل', 'warn'); return; }
+      const today = getTodayKey();
+      const firstToday = !(state.review && state.review.xpDate === today);
+      state.review = { win, miss, tweak, date: today, xpDate: today };
+      if (firstToday) { addXPAndGems(20, 10); recordIdentityEvidence('أجريت مراجعتي الأسبوعية وحدّدت تعديل الأسبوع القادم'); }
+      SoundEngine.playGem(2); saveState(); renderAll(); fillExtras();
+      showToast('📝 تم حفظ المراجعة الأسبوعية', 'success');
+    }
+
+    function fillExtras() {
+      const c = state.contract || {};
+      [['contractCommit', c.commit], ['contractPartner', c.partner], ['contractPenalty', c.penalty]].forEach(([id, v]) => { const el = document.getElementById(id); if (el && document.activeElement !== el) el.value = v || ''; });
+      const r = state.review;
+      [['reviewWin', r && r.win], ['reviewMiss', r && r.miss], ['reviewTweak', r && r.tweak]].forEach(([id, v]) => { const el = document.getElementById(id); if (el && document.activeElement !== el) el.value = v || ''; });
+      const last = document.getElementById('reviewLast');
+      if (last) last.textContent = r ? `آخر مراجعة محفوظة: ${r.date}` : '';
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      renderAll();
+      fillExtras();
+      setInterval(() => {
+        updateGoldenHourTick();
+        const prayerData = computeZarqaPrayerTimes(new Date(), state.prayerOffsets);
+        document.getElementById('nextPrayerCountdownHeader').textContent = getNextPrayerInfo(prayerData);
+      }, 1000);
+    });
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.protocol === 'http:')) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+    let deferredPwaPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPwaPrompt = e;
+      if (typeof showToast === 'function') {
+        showToast('📲 التطبيق جاهز للتثبيت على هاتفك! من قائمة المتصفح اختر "تثبيت التطبيق".', 'info');
+      }
+    });
+  </script>
+
+</body>
+</html>
